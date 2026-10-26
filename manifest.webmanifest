@@ -1,6 +1,6 @@
 {
-  "name": "Lernstube",
-  "short_name": "Lernstube",
+  "name": "StudyTime",
+  "short_name": "StudyTime",
   "description": "Pomodoro-Timer mit Ambience",
   "start_url": "./",
   "scope": "./",

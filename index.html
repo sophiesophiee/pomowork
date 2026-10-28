@@ -182,7 +182,15 @@ background:radial-gradient(circle at 35% 30%,#ffe0a8,var(--gold) 48%,#7a4e10);bo
     <p class="hint">Deine Favoriten</p><div class="chips" id="favs"></div>
     
     
-    <p class="hint">Füge einen YouTube-Link ein (Video oder Playlist), gib ihm einen Namen und merke ihn dir als Favorit. Mit dem Ton-Knopf oben rechts schaltest du die Musik zu.</p></div></details>
+    <div class="snd"><label for="vv">🎬 Video-Ton</label><input type="range" id="vv" min="0" max="100" value="0"></div>
+    <p class="hint">Füge einen YouTube-Link ein (Video oder Playlist), gib ihm einen Namen und merke ihn dir als Favorit. Das Video startet stumm. Mit dem Regler oder dem Ton-Knopf oben rechts stellst du den Ton ein.</p></div></details>
+  <details><summary>Musik</summary><div>
+    <div class="add"><input type="text" id="spi" placeholder="Spotify-Link einfügen" aria-label="Spotify-Link"><button class="sm" id="spb">Laden</button><button class="sm" id="spx" aria-label="Spotify ausblenden" title="Player entfernen">■</button></div>
+    <div class="add" style="margin-top:6px"><input type="text" id="spn" placeholder="Name zum Merken" maxlength="30" aria-label="Name zum Merken"><button class="sm" id="sps">★ Merken</button></div>
+    <p class="hint">Deine Favoriten</p><div class="chips" id="spf"></div>
+    <div id="spp" style="margin-top:8px"></div>
+    <div class="row" style="justify-content:flex-start;margin-top:8px"><button class="sm" id="spt">Mit Liste</button></div>
+    <p class="hint">Playlist, Album oder Song von Spotify. Volle Songs hörst du, wenn du im selben Browser bei Spotify eingeloggt bist, sonst gibt es nur Ausschnitte. Die Musik läuft weiter, wenn du die Seitenleiste einklappst.</p></div></details>
   <details><summary>Stimmung</summary><div><div class="themes" id="themes"></div></div></details>
   <details><summary>Persönliches</summary><div>
     <div class="add"><input type="text" id="nm" placeholder="Wie sollen wir dich nennen?" maxlength="20" aria-label="Dein Name"></div>
@@ -200,7 +208,7 @@ background:radial-gradient(circle at 35% 30%,#ffe0a8,var(--gold) 48%,#7a4e10);bo
     <p class="hint" style="margin-top:12px">Status für deinen Accountability-Buddy</p>
     <textarea id="bt" readonly aria-label="Status zum Teilen"></textarea>
     <button class="sm" id="bc" style="margin-top:6px">Status kopieren</button></div></details>
-<p class="hint" style="margin-top:18px;text-align:center">Version 5 · Oktober 2026</p>
+<p class="hint" style="margin-top:18px;text-align:center">Version 6 · Oktober 2026</p>
 </aside>
 
 <section id="card" aria-label="Timer">
@@ -241,7 +249,7 @@ background:radial-gradient(circle at 35% 30%,#ffe0a8,var(--gold) 48%,#7a4e10);bo
 (function(){
 var $=function(i){return document.getElementById(i)};
 var key=function(o){var d=new Date();d.setDate(d.getDate()-(o||0));return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
-var S={name:"Sophie",drink:"Tee",mantra:"",post:true,todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
+var S={sfavs:[],sp:"",spbig:false,vv:0,vl:60,name:"Sophie",drink:"Tee",mantra:"",post:true,todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
 try{var r=JSON.parse(localStorage.getItem("lernstube1"));if(r)for(var k in r)S[k]=r[k]}catch(e){}
 function save(){try{localStorage.setItem("lernstube1",JSON.stringify(S))}catch(e){}}
 
@@ -362,20 +370,23 @@ function build(){
 function vol(k,v){S.vol[k]=v;if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C||!v)return;AC=new C();build()}
   if(AC.state==="suspended")AC.resume();G[k].gain.setTargetAtTime(v/100*SC[k],AC.currentTime,.15);save()}
 KS.forEach(function(k){var el=$("v-"+k);el.value=S.vol[k]||0;el.oninput=function(){vol(k,+el.value)}});
-document.addEventListener("pointerdown",function f(){document.removeEventListener("pointerdown",f);KS.forEach(function(k){if(S.vol[k]>0)vol(k,S.vol[k])})});
+document.addEventListener("pointerdown",function f(){document.removeEventListener("pointerdown",f);KS.forEach(function(k){if(S.vol[k]>0)vol(k,S.vol[k])});if(S.vv>0&&$("yf"))setTimeout(function(){vvol(S.vv)},400)});
 
 /* Video im Vollbild */
 var muted=true;
 function ytParse(v){var m=v.match(/(?:v=|youtu\.be\/|embed\/|live\/|shorts\/)([\w-]{11})/),l=v.match(/[?&]list=([\w-]+)/);if(!m&&!l)return null;return{v:m&&m[1],l:l&&l[1]}}
 function yt(){var val=$("yi").value.trim(),m=ytParse(val);if(!m){$("yi").value="";$("yi").placeholder="Kein gültiger YouTube-Link";return}
-  S.yt=val;save();muted=true;var bg=$("bg");bg.innerHTML="";var i=document.createElement("iframe"),q="?enablejsapi=1&playsinline=1&rel=0&autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&loop=1";
+  S.yt=val;save();muted=true;$("vv").value=0;var bg=$("bg");bg.innerHTML="";var i=document.createElement("iframe"),q="?enablejsapi=1&playsinline=1&rel=0&autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&loop=1";
   if(m.v)i.src="https://www.youtube-nocookie.com/embed/"+m.v+q+(m.l?"&list="+m.l:"&playlist="+m.v);else i.src="https://www.youtube-nocookie.com/embed/videoseries"+q+"&list="+m.l;
   i.allow="autoplay; encrypted-media";i.title="Hintergrundvideo";i.id="yf";bg.appendChild(i);$("mu").style.display="grid";$("mu").textContent="🔇"}
 function favs(){var c=$("favs");c.innerHTML="";S.favs.forEach(function(f,i){var w=document.createElement("span");w.className="fv";var b=document.createElement("button");b.className="sm";b.textContent="▶ "+f.n;b.onclick=function(){$("yi").value=f.u;yt()};var x=document.createElement("button");x.className="x";x.textContent="✕";x.setAttribute("aria-label",f.n+" entfernen");x.onclick=function(){S.favs.splice(i,1);save();favs()};w.append(b,x);c.appendChild(w)})}
 $("ys").onclick=function(){var u=$("yi").value.trim(),n=$("yn").value.trim();if(!u||!n||!ytParse(u))return;S.favs.push({n:n,u:u});$("yn").value="";save();favs()};
 $("yb").onclick=yt;$("yi").onkeydown=function(e){if(e.key==="Enter")yt()};
 $("yoff").onclick=function(){$("bg").innerHTML="";$("mu").style.display="none";S.yt="";$("yi").value="";save()};
-$("mu").onclick=function(){var f=$("yf");if(!f)return;muted=!muted;f.contentWindow.postMessage(JSON.stringify({event:"command",func:muted?"mute":"unMute",args:""}),"*");$("mu").textContent=muted?"🔇":"🔊"};
+function ytcmd(f,a){var fr=$("yf");if(fr&&fr.contentWindow)fr.contentWindow.postMessage(JSON.stringify({event:"command",func:f,args:a||""}),"*")}
+function vvol(v){v=Math.max(0,Math.min(100,v));S.vv=v;if(v>0)S.vl=v;save();muted=v===0;if(muted)ytcmd("mute");else{ytcmd("unMute");ytcmd("setVolume",[v])}$("mu").textContent=muted?"🔇":"🔊";$("vv").value=v}
+$("vv").oninput=function(){vvol(+$("vv").value)};
+$("mu").onclick=function(){vvol(muted?(S.vl||60):0)};
 $("fs").onclick=function(){try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}catch(e){}};
 $("yi").value=S.yt||"";favs();if(S.yt)yt();
 
@@ -411,6 +422,18 @@ function ansMsg(a,bf){var n=bf+(a==="no"?0:1),g=S.goal;
   if(a==="no")toast("Alles gut","Neuer Anlauf, neue Runde"+nm()+".","✦");
   else if(n>=g&&bf<g)toast("Tagesziel erreicht","Wow"+nm()+": "+rom(n)+" Runden heute. Das darfst du feiern.","★");
   else toast(a==="yes"?"Stark":"Auch das zählt",(a==="yes"?"Voll dabei":"Eine halbe Runde zählt")+nm()+". "+(n<g?"Noch "+(g-n)+" bis zum Tagesziel.":"Ziel schon geschafft, alles darüber ist Bonus."),"✦")}
+function spParse(u){var m=u.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|album|playlist|artist|episode|show)\/([A-Za-z0-9]+)/)||u.match(/spotify:(track|album|playlist|artist|episode|show):([A-Za-z0-9]+)/);return m?{t:m[1],i:m[2]}:null}
+function sp(){var v=$("spi").value.trim(),m=spParse(v);if(!m){$("spi").value="";$("spi").placeholder="Kein gültiger Spotify-Link";return}
+  S.sp=v;save();var c=$("spp");c.innerHTML="";var f=document.createElement("iframe");
+  f.src="https://open.spotify.com/embed/"+m.t+"/"+m.i+"?utm_source=generator&theme=0";f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.title="Spotify-Player";
+  f.style.cssText="width:100%;border:0;border-radius:12px;height:"+(S.spbig?352:152)+"px";c.appendChild(f)}
+function spfavs(){var c=$("spf");c.innerHTML="";S.sfavs.forEach(function(f,i){var w=document.createElement("span");w.className="fv";var b=document.createElement("button");b.className="sm";b.textContent="♪ "+f.n;b.onclick=function(){$("spi").value=f.u;sp()};
+  var x=document.createElement("button");x.className="x";x.textContent="✕";x.setAttribute("aria-label",f.n+" entfernen");x.onclick=function(){S.sfavs.splice(i,1);save();spfavs()};w.append(b,x);c.appendChild(w)})}
+$("spb").onclick=sp;$("spi").onkeydown=function(e){if(e.key==="Enter")sp()};
+$("spx").onclick=function(){$("spp").innerHTML="";S.sp="";$("spi").value="";save()};
+$("sps").onclick=function(){var u=$("spi").value.trim(),n=$("spn").value.trim();if(!u||!n||!spParse(u))return;S.sfavs.push({n:n,u:u});$("spn").value="";save();spfavs()};
+$("spt").onclick=function(){S.spbig=!S.spbig;save();var f=$("spp").firstChild;if(f)f.style.height=(S.spbig?352:152)+"px";$("spt").textContent=S.spbig?"Kompakt":"Mit Liste"};
+$("spt").textContent=S.spbig?"Kompakt":"Mit Liste";$("spi").value=S.sp||"";spfavs();if(S.sp)sp();
 /* Seitenleiste */
 function sbar(o){S.sb=o;$("sb").classList.toggle("open",o);$("tg").setAttribute("aria-expanded",o);save()}
 $("tg").onclick=function(){sbar(!$("sb").classList.contains("open"))};

@@ -138,6 +138,22 @@ details[open]>summary::after{transform:rotate(45deg)}
 #tdw{margin-top:0}.tdw{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.3,.9,.3,1);text-align:left}.tdw.open{grid-template-rows:1fr}
 .tdw>.in{overflow:hidden;min-height:0}.tdw:not(.open)>.in{visibility:hidden;transition:visibility 0s .4s}.tdw.open>.in{padding-top:8px}
 @media (prefers-reduced-motion:reduce){#card,#pill,.tdw,aside,#tg line{transition:none!important}#pill.live{animation:none}}
+
+/* v5: Hedwigs Post (3D-Toasts) */
+#toasts{position:fixed;right:max(16px,3vw);bottom:150px;z-index:25;display:flex;flex-direction:column;gap:14px;align-items:flex-end;pointer-events:none;perspective:900px;width:min(320px,calc(100vw - 32px));transition:bottom .3s ease}
+.toast{--rx:0deg;--ry:0deg;position:relative;pointer-events:auto;width:100%;padding:14px 18px 14px 30px;border-radius:6px;color:var(--ink);cursor:pointer;
+background:linear-gradient(145deg,rgba(255,255,255,.09),transparent 45%),var(--paper),var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+border:1px solid var(--gold);outline:1px solid var(--line);outline-offset:-5px;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 2px 0 rgba(0,0,0,.3),0 14px 26px rgba(0,0,0,.38),0 32px 60px rgba(0,0,0,.3);
+transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .18s ease-out;animation:ti .75s cubic-bezier(.34,1.5,.64,1) both}
+@keyframes ti{from{opacity:0;transform:translateY(46px) rotate(5deg) scale(.88)}}
+.toast.out{animation:to .45s ease-in forwards}@keyframes to{to{opacity:0;transform:translateX(70px) rotate(5deg) scale(.92)}}
+.toast b{display:block;font:italic 600 .95rem "Cormorant Garamond",Georgia,serif;letter-spacing:.06em;color:var(--gold)}
+.toast p{margin:3px 0 0;font-size:1.1rem;line-height:1.3}
+.seal{position:absolute;left:-13px;top:-13px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:1rem;color:#4a1414;transform:rotate(-8deg);
+background:radial-gradient(circle at 35% 30%,#ffe0a8,var(--gold) 48%,#7a4e10);box-shadow:inset 0 -3px 4px rgba(0,0,0,.35),inset 0 2px 3px rgba(255,255,255,.55),0 6px 10px rgba(0,0,0,.45)}
+.chk2{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.95rem}.chk2 input{accent-color:var(--gold);width:16px;height:16px}
+@media (prefers-reduced-motion:reduce){.toast,.toast.out{animation:none}.toast{transition:none}}
 </style>
 </head>
 <body data-t="kamin">
@@ -161,18 +177,21 @@ details[open]>summary::after{transform:rotate(45deg)}
     <div class="snd"><label for="v-wind">🍃 Wind</label><input type="range" id="v-wind" min="0" max="100" value="0"></div>
     <p class="hint">Alle Sounds entstehen live im Browser und lassen sich mischen.</p></div></details>
   <details><summary>Video</summary><div>
-    <div class="add"><input type="text" id="yi" placeholder="YouTube-Link einfügen" aria-label="YouTube-Link"><button class="sm" id="yb">Laden</button></div>
+    <div class="add"><input type="text" id="yi" placeholder="YouTube-Link einfügen" aria-label="YouTube-Link"><button class="sm" id="yb">Laden</button><button class="sm" id="yoff" aria-label="Video ausschalten" title="Video aus">■</button></div>
     <div class="add" style="margin-top:6px"><input type="text" id="yn" placeholder="Name zum Merken" maxlength="30" aria-label="Name zum Merken"><button class="sm" id="ys">★ Merken</button></div>
     <p class="hint">Deine Favoriten</p><div class="chips" id="favs"></div>
-    <p class="hint">Neue Videos suchen</p><div class="chips" id="chips"></div>
-    <div class="row" style="justify-content:flex-start"><button class="sm" id="yoff">Video aus</button><a class="sm" id="yo" style="display:none" target="_blank" rel="noopener">Auf YouTube öffnen</a></div>
-    <p class="hint">Suche dir ein Ambience-Video, kopiere den Link hierher und lade es. Es füllt den ganzen Bildschirm und startet stumm. Der Ton-Knopf oben rechts schaltet die Musik zu. Bleibt der Bildschirm schwarz, blockiert die Seite den Player: dann „Video aus“ und nutze den YouTube-Tab.</p></div></details>
+    
+    
+    <p class="hint">Füge einen YouTube-Link ein (Video oder Playlist), gib ihm einen Namen und merke ihn dir als Favorit. Mit dem Ton-Knopf oben rechts schaltest du die Musik zu.</p></div></details>
   <details><summary>Stimmung</summary><div><div class="themes" id="themes"></div></div></details>
   <details><summary>Persönliches</summary><div>
     <div class="add"><input type="text" id="nm" placeholder="Wie sollen wir dich nennen?" maxlength="20" aria-label="Dein Name"></div>
     <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="sm" id="nb">🔔 Benachrichtigungen erlauben</button></div>
     <p class="hint" id="ns"></p>
-    <p class="hint">Am Ende jeder Runde kommt eine Nachricht, wenn der Tab im Hintergrund ist. Auf dem iPhone klappt das leider nicht zuverlässig.</p></div></details>
+    <div class="add" style="margin-top:10px"><input type="text" id="dr" placeholder="Dein Cozy-Getränk (z. B. Tee)" maxlength="20" aria-label="Cozy-Getränk"></div>
+    <div class="add" style="margin-top:8px"><input type="text" id="mn" placeholder="Dein Mantra (optional)" maxlength="60" aria-label="Mantra"></div>
+    <label class="chk2"><input type="checkbox" id="pp"> Nachrichten von Hedwig einblenden</label>
+    </div></details>
   <details><summary>Ziele &amp; Streak</summary><div>
     <div class="stats"><span>Tagesziel</span><span><button class="sm" id="gm" aria-label="Ziel senken">−</button> <b id="gv">4</b> <button class="sm" id="gp" aria-label="Ziel erhöhen">+</button></span></div>
     <div class="bar"><div id="gb"></div></div>
@@ -181,6 +200,7 @@ details[open]>summary::after{transform:rotate(45deg)}
     <p class="hint" style="margin-top:12px">Status für deinen Accountability-Buddy</p>
     <textarea id="bt" readonly aria-label="Status zum Teilen"></textarea>
     <button class="sm" id="bc" style="margin-top:6px">Status kopieren</button></div></details>
+<p class="hint" style="margin-top:18px;text-align:center">Version 5 · Oktober 2026</p>
 </aside>
 
 <section id="card" aria-label="Timer">
@@ -214,13 +234,14 @@ details[open]>summary::after{transform:rotate(45deg)}
     <ul id="tl"></ul><p class="hint">Tippe eine Aufgabe an, um sie für die nächste Runde zu wählen.</p></div></div>
   </div>
 </section>
+<div id="toasts" aria-live="polite"></div>
 <button id="pill" aria-label="Timer ausklappen">25:00</button>
 
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
 var key=function(o){var d=new Date();d.setDate(d.getDate()-(o||0));return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
-var S={name:"Sophie",todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
+var S={name:"Sophie",drink:"Tee",mantra:"",post:true,todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
 try{var r=JSON.parse(localStorage.getItem("lernstube1"));if(r)for(var k in r)S[k]=r[k]}catch(e){}
 function save(){try{localStorage.setItem("lernstube1",JSON.stringify(S))}catch(e){}}
 
@@ -251,7 +272,7 @@ function render(){
   var t=activeTask(),el=$("task");el.innerHTML="";if(t){var b=document.createElement("b");b.textContent=t.t;el.append("Dran: ",b)}else el.textContent="Füge unten eine Aufgabe hinzu.";
   var n=cyc%4,d=$("dots");d.innerHTML="";for(var i=0;i<4;i++){var o=document.createElement("span");o.className="dot"+(i<n?" on":"");d.appendChild(o)}
   var l=document.createElement("span");l.textContent=rom(today())+(today()===1?" Runde heute":" Runden heute");d.appendChild(l);
-  var oc=S.todos.filter(function(t){return!t.d}).length;$("tdc").textContent=oc?oc+" offen":"leer";
+  dockpos();var oc=S.todos.filter(function(t){return!t.d}).length;$("tdc").textContent=oc?oc+" offen":"leer";
   $("mt").textContent=hi()+" · tempus fugit";
   document.title=(running?fmt(left)+" · ":"")+"Lernstube";
 }
@@ -260,29 +281,29 @@ function chime(){try{var C=new(window.AudioContext||window.webkitAudioContext)()
   g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(q[1]*.5,t+d+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d+q[2]);o.connect(g);g.connect(C.destination);o.start(t+d);o.stop(t+d+q[2]+.1)})})}catch(e){}}
 var W=null;try{W=new Worker(URL.createObjectURL(new Blob(["var t=null;onmessage=function(e){clearInterval(t);if(e.data==='go')t=setInterval(function(){postMessage(1)},250)}"],{type:"text/javascript"})))}catch(e){}
 function stop(){running=false;clearInterval(tick);if(W)W.postMessage("stop")}
-function setMode(m){stop();mode=m;left=MODES[m].min*60000;render()}
+function setMode(m){flags={};stop();mode=m;left=MODES[m].min*60000;render()}
 function finish(){
   stop();chime();var wasF=mode==="focus";if(document.hidden)notify(wasF?"Geschafft"+(S.name?", "+S.name:"")+"! 🦉":"Pause vorbei","​"+(wasF?"Gönn dir jetzt eine Pause.":"Zeit für die nächste Runde.")+"");
-  if(wasF){cyc++;var a=activeTask();$("chkq").textContent="Wie war die Runde"+(a?" mit „"+a.t+"“":"")+"? Ehrlich zählt"+(S.name?", "+S.name:"")+".";$("chk").classList.add("on")}
+  finMsg(wasF);if(wasF){cyc++;var a=activeTask();$("chkq").textContent="Wie war die Runde"+(a?" mit „"+a.t+"“":"")+"? Ehrlich zählt"+(S.name?", "+S.name:"")+".";$("chk").classList.add("on")}
   var f=$("fly");f.classList.remove("go");void f.getBoundingClientRect();f.classList.add("go");setTimeout(function(){f.classList.remove("go")},5200);
   var next=wasF?(cyc%4===0?"long":"short"):"focus";left=0;render();$("msg").textContent=wasF?"Hedwig bringt Post für "+(S.name||"dich")+": geschafft!":"Pause vorbei, weiter geht’s.";
   setTimeout(function(){mode=next;left=MODES[next].min*60000;render()},2600);
 }
-function start(){running=true;endAt=Date.now()+left;var pool=PEP.concat(S.name?["Du schaffst das, "+S.name+".",S.name+", ein Schritt nach dem anderen.","Stark, "+S.name+". Weiter so."]:[]);pep=pool[Math.floor(Math.random()*pool.length)];clearInterval(tick);$("chk").classList.remove("on");
-  var fn=function(){left=endAt-Date.now();if(left<=0)finish();else render()};
+function start(){var first=left>=MODES[mode].min*60000-1000;running=true;endAt=Date.now()+left;if(first){flags={};if(mode==="focus")startMsg()}var pool=PEP.concat(S.name?["Du schaffst das, "+S.name+".",S.name+", ein Schritt nach dem anderen.","Stark, "+S.name+". Weiter so."]:[]);pep=pool[Math.floor(Math.random()*pool.length)];clearInterval(tick);$("chk").classList.remove("on");
+  var fn=function(){left=endAt-Date.now();if(left<=0)finish();else{miles();render()}};
   if(W){W.onmessage=fn;W.postMessage("go")}else tick=setInterval(fn,250);render()}
 $("go").onclick=function(){if(running){left=endAt-Date.now();stop();render()}else start()};
 $("reset").onclick=function(){setMode(mode)};
 document.querySelectorAll("#tabs button").forEach(function(b){b.onclick=function(){setMode(b.dataset.m)}});
 document.querySelectorAll("#chk button").forEach(function(b){b.onclick=function(){
-  if(b.dataset.a!=="no"){S.days[key()]=today()+1;var a=activeTask();if(a)a.p=(a.p||0)+1}
+  var ans=b.dataset.a,bf=today();if(ans!=="no"){S.days[key()]=bf+1;var a=activeTask();if(a)a.p=(a.p||0)+1}ansMsg(ans,bf);
   save();$("chk").classList.remove("on");render();stats();todos()}});
 
 /* Aufgaben */
 function todos(){var ul=$("tl");ul.innerHTML="";
   S.todos.forEach(function(t){var li=document.createElement("li");li.className=(t.d?"d ":"")+(t.id===S.active?"act":"");
     var c=document.createElement("input");c.type="checkbox";c.checked=!!t.d;c.setAttribute("aria-label","Erledigt");
-    c.onchange=function(){t.d=c.checked;if(t.d&&S.active===t.id)S.active=null;save();todos();render();stats()};
+    c.onchange=function(){t.d=c.checked;if(t.d)toast("Erledigt","„"+t.t+"“ ist abgehakt"+nm()+".","✓");if(t.d&&S.active===t.id)S.active=null;save();todos();render();stats()};
     var b=document.createElement("button");b.className="t";b.textContent=t.t;b.onclick=function(){if(!t.d){S.active=t.id;save();todos();render()}};
     var s=document.createElement("small");s.textContent=t.p?"✦×"+t.p:"";
     var x=document.createElement("button");x.className="x";x.textContent="✕";x.setAttribute("aria-label","Löschen");
@@ -344,35 +365,57 @@ KS.forEach(function(k){var el=$("v-"+k);el.value=S.vol[k]||0;el.oninput=function
 document.addEventListener("pointerdown",function f(){document.removeEventListener("pointerdown",f);KS.forEach(function(k){if(S.vol[k]>0)vol(k,S.vol[k])})});
 
 /* Video im Vollbild */
-["Gryffindor Common Room","Hogwarts Library","Rainy Hogwarts","Slytherin Common Room","Hufflepuff Common Room","Pomodoro 25/5"].forEach(function(c){var a=document.createElement("a");a.target="_blank";a.rel="noopener";a.textContent="🔎 "+c;a.href="https://www.youtube.com/results?search_query="+encodeURIComponent("Harry Potter ambience "+c);$("chips").appendChild(a)});
 var muted=true;
 function ytParse(v){var m=v.match(/(?:v=|youtu\.be\/|embed\/|live\/|shorts\/)([\w-]{11})/),l=v.match(/[?&]list=([\w-]+)/);if(!m&&!l)return null;return{v:m&&m[1],l:l&&l[1]}}
 function yt(){var val=$("yi").value.trim(),m=ytParse(val);if(!m){$("yi").value="";$("yi").placeholder="Kein gültiger YouTube-Link";return}
   S.yt=val;save();muted=true;var bg=$("bg");bg.innerHTML="";var i=document.createElement("iframe"),q="?enablejsapi=1&playsinline=1&rel=0&autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&loop=1";
   if(m.v)i.src="https://www.youtube-nocookie.com/embed/"+m.v+q+(m.l?"&list="+m.l:"&playlist="+m.v);else i.src="https://www.youtube-nocookie.com/embed/videoseries"+q+"&list="+m.l;
-  i.allow="autoplay; encrypted-media";i.title="Hintergrundvideo";i.id="yf";bg.appendChild(i);$("mu").style.display="grid";$("mu").textContent="🔇";$("yo").style.display="";$("yo").href=m.v?"https://www.youtube.com/watch?v="+m.v:"https://www.youtube.com/playlist?list="+m.l}
+  i.allow="autoplay; encrypted-media";i.title="Hintergrundvideo";i.id="yf";bg.appendChild(i);$("mu").style.display="grid";$("mu").textContent="🔇"}
 function favs(){var c=$("favs");c.innerHTML="";S.favs.forEach(function(f,i){var w=document.createElement("span");w.className="fv";var b=document.createElement("button");b.className="sm";b.textContent="▶ "+f.n;b.onclick=function(){$("yi").value=f.u;yt()};var x=document.createElement("button");x.className="x";x.textContent="✕";x.setAttribute("aria-label",f.n+" entfernen");x.onclick=function(){S.favs.splice(i,1);save();favs()};w.append(b,x);c.appendChild(w)})}
 $("ys").onclick=function(){var u=$("yi").value.trim(),n=$("yn").value.trim();if(!u||!n||!ytParse(u))return;S.favs.push({n:n,u:u});$("yn").value="";save();favs()};
 $("yb").onclick=yt;$("yi").onkeydown=function(e){if(e.key==="Enter")yt()};
-$("yoff").onclick=function(){$("bg").innerHTML="";$("mu").style.display="none";$("yo").style.display="none";S.yt="";$("yi").value="";save()};
+$("yoff").onclick=function(){$("bg").innerHTML="";$("mu").style.display="none";S.yt="";$("yi").value="";save()};
 $("mu").onclick=function(){var f=$("yf");if(!f)return;muted=!muted;f.contentWindow.postMessage(JSON.stringify({event:"command",func:muted?"mute":"unMute",args:""}),"*");$("mu").textContent=muted?"🔇":"🔊"};
 $("fs").onclick=function(){try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}catch(e){}};
 $("yi").value=S.yt||"";favs();if(S.yt)yt();
 
-function cmin(o){S.cm=o;$("card").classList.toggle("min",o);$("pill").classList.toggle("on",o);save()}
+function cmin(o){S.cm=o;$("card").classList.toggle("min",o);$("pill").classList.toggle("on",o);save();dockpos()}
 function tdo(o){S.td=o;$("tdw").classList.toggle("open",o);$("tdt").setAttribute("aria-expanded",o);save()}
 $("tdt").onclick=function(){tdo(!S.td)};
 $("cc").onclick=function(){cmin(true)};$("pill").onclick=function(){cmin(false)};
 function notify(t,b){try{if("Notification" in window&&Notification.permission==="granted")new Notification(t,{body:b.replace("\u200b",""),icon:"icon-192.png",tag:"lernstube"})}catch(e){}}
-function nstat(){var el=$("ns"),b=$("nb");if(!("Notification" in window)){el.textContent="Dein Browser unterstützt keine Benachrichtigungen.";b.style.display="none";return}
-  var p=Notification.permission;el.textContent=p==="granted"?"Aktiv ✓":p==="denied"?"Im Browser blockiert. Erlaube sie über das Symbol links neben der Adresse.":"Noch nicht erlaubt.";b.style.display=p==="granted"?"none":""}
+function nstat(){var el=$("ns"),b=$("nb");if(!("Notification" in window)){b.style.display=el.style.display="none";return}
+  var p=Notification.permission;b.style.display=p==="granted"?"none":"";el.textContent=p==="denied"?"Im Browser blockiert. Erlaube sie über das Symbol links neben der Adresse.":""}
 $("nb").onclick=function(){try{Notification.requestPermission().then(function(){nstat();notify("Hey"+(S.name?" "+S.name:"")+"!","So sieht deine Benachrichtigung aus.")})}catch(e){}};
+$("dr").value=S.drink||"";$("dr").oninput=function(){S.drink=$("dr").value.trim();save()};$("mn").value=S.mantra||"";$("mn").oninput=function(){S.mantra=$("mn").value.trim();save()};$("pp").checked=S.post!==false;$("pp").onchange=function(){S.post=$("pp").checked;save()};
 $("nm").value=S.name||"";$("nm").oninput=function(){S.name=$("nm").value.trim();save();render()};
+var flags={};
+function nm(){return S.name?", "+S.name:""}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+var TIPS=["Trink einen Schluck Wasser.","Streck dich kurz.","Schau mal aus dem Fenster.","Atme dreimal tief durch."];
+function dockpos(){var h=S.cm?$("pill").offsetHeight:$("card").offsetHeight;$("toasts").style.bottom=(h+Math.max(16,window.innerHeight*.03)+16)+"px"}
+if(window.ResizeObserver)new ResizeObserver(dockpos).observe($("card"));window.addEventListener("resize",dockpos);
+function toast(t,m,ic){if(S.post===false)return;var c=$("toasts"),e=document.createElement("div");e.className="toast";
+  var i=document.createElement("i");i.className="seal";i.textContent=ic||"✦";var b=document.createElement("b");b.textContent=t;var p=document.createElement("p");p.textContent=m;e.append(i,b,p);
+  var kill=function(){if(e._k)return;e._k=1;e.classList.add("out");setTimeout(function(){e.remove()},450)};e.onclick=kill;
+  e.addEventListener("pointermove",function(ev){var r=e.getBoundingClientRect();e.style.setProperty("--ry",((ev.clientX-r.left)/r.width-.5)*14+"deg");e.style.setProperty("--rx",-((ev.clientY-r.top)/r.height-.5)*12+"deg")});
+  e.addEventListener("pointerleave",function(){e.style.setProperty("--ry","0deg");e.style.setProperty("--rx","0deg")});
+  c.appendChild(e);while(c.children.length>3)c.firstChild.remove();setTimeout(kill,7500);dockpos()}
+function greet(){toast("Post von Hedwig",hi()+". "+((S.mantra&&Math.random()<.5)?"„"+S.mantra+"“":pick(["Mach es dir gemütlich, die Kerzen brennen.","Ein kleiner Schritt reicht heute.","Bereit, wenn du es bist."])),"✉")}
+function startMsg(){var a=activeTask();toast("Runde "+rom(today()+1),"Los geht’s"+nm()+"!"+(a?" Dran: "+a.t+".":" "+pick(["Eine Sache, voller Fokus.","Handy weg, Kerze an."])),"✉")}
+function miles(){if(mode!=="focus")return;var full=MODES.focus.min*60000;
+  if(!flags.h&&left<=full/2){flags.h=1;toast("Halbzeit","Die Hälfte ist geschafft"+nm()+". "+(S.mantra?"„"+S.mantra+"“":"Weiter so."),"⏳")}
+  if(!flags.f&&left<=5*60000){flags.f=1;toast("Fast da","Noch fünf Minuten"+nm()+". Du schaffst das.","✦")}}
+function finMsg(wasF){if(wasF)toast("Runde geschafft","Stark"+nm()+"! "+(S.drink?"Gönn dir jetzt eine Pause, "+S.drink+" wartet.":pick(TIPS)),"☕");else toast("Pause vorbei","Bereit für die nächste Runde"+nm()+"?","☾")}
+function ansMsg(a,bf){var n=bf+(a==="no"?0:1),g=S.goal;
+  if(a==="no")toast("Alles gut","Neuer Anlauf, neue Runde"+nm()+".","✦");
+  else if(n>=g&&bf<g)toast("Tagesziel erreicht","Wow"+nm()+": "+rom(n)+" Runden heute. Das darfst du feiern.","★");
+  else toast(a==="yes"?"Stark":"Auch das zählt",(a==="yes"?"Voll dabei":"Eine halbe Runde zählt")+nm()+". "+(n<g?"Noch "+(g-n)+" bis zum Tagesziel.":"Ziel schon geschafft, alles darüber ist Bonus."),"✦")}
 /* Seitenleiste */
 function sbar(o){S.sb=o;$("sb").classList.toggle("open",o);$("tg").setAttribute("aria-expanded",o);save()}
 $("tg").onclick=function(){sbar(!$("sb").classList.contains("open"))};
 document.addEventListener("keydown",function(e){var t=e.target.tagName;if(e.code==="Space"&&t!=="BUTTON"&&t!=="INPUT"&&t!=="TEXTAREA"&&t!=="SUMMARY"){e.preventDefault();$("go").click()}});
-theme(S.theme);nstat();cmin(!!S.cm);tdo(!!S.td);todos();stats();render();sbar(S.sb===null?window.innerWidth>=700:S.sb);
+theme(S.theme);nstat();cmin(!!S.cm);tdo(!!S.td);todos();stats();render();sbar(S.sb===null?window.innerWidth>=700:S.sb);setTimeout(greet,1400);
 })();
 </script>
 </body>

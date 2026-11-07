@@ -268,8 +268,16 @@ li .mvb{color:var(--gold)}
 @media (prefers-reduced-motion:reduce){.disc{animation:none}.arm{transition:none}}
 .lab.cov{width:84px;height:84px;margin:-42px 0 0 -42px;background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px rgba(0,0,0,.4),0 0 0 2px #0b090d}
 .lab.cov::after{width:9px;height:9px;margin:-4.5px 0 0 -4.5px}
-#spw.vinyl{width:272px}#spw.vinyl #spt{display:none}
+#spw.vinyl{width:272px}
 #vin{padding-bottom:4px}
+
+/* v21: Liste ODER Platte */
+.spr{display:inline-flex;align-items:center;gap:8px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:none;color:var(--ink);font:inherit;font-style:normal;font-size:.82rem;padding:2px 11px;cursor:pointer;opacity:.85;transition:background .25s,color .25s}
+.seg button[aria-pressed="true"]{background:var(--gold);color:var(--on);opacity:1}
+#spw{transition:opacity .35s ease,transform .55s cubic-bezier(.34,1.4,.64,1),left .45s cubic-bezier(.2,.9,.25,1),width .4s cubic-bezier(.2,.9,.25,1)}
+#spw.dragging{transition:none!important}
 </style>
 </head>
 <body data-t="kamin">
@@ -321,7 +329,7 @@ li .mvb{color:var(--gold)}
     <textarea id="dt" maxlength="160" placeholder="Eine Zeile reicht …" aria-label="Tagebuchzeile für heute" style="height:64px"></textarea>
     <ul id="dl" style="max-height:220px;overflow-y:auto"></ul>
   </div></details>
-  <p class="hint" style="margin-top:18px;text-align:center">Version 20 · Oktober 2026</p>
+  <p class="hint" style="margin-top:18px;text-align:center">Version 21 · Oktober 2026</p>
 </aside>
 
 <section id="card" aria-label="Timer">
@@ -357,7 +365,7 @@ li .mvb{color:var(--gold)}
     <details id="tdone"><summary>Erledigt <small id="tdn"></small></summary><ul id="tl2"></ul></details><p class="hint">Tippe eine Aufgabe an, um sie für die nächste Runde zu wählen. Am ⠿ ziehst du sie in die richtige Reihenfolge.</p></div></div>
   </div>
 </section>
-<div id="spw" class="off" role="region" aria-label="Spotify-Player"><div class="spwh" title="Zum Verschieben ziehen, Doppelklick setzt zurück"><span>♪ Spotify</span><span><button class="x" id="spv2" aria-label="Plattenspieler-Ansicht" title="Plattenspieler" aria-pressed="false">◉</button><button class="x" id="spt">Liste</button><button class="x" id="spwx" aria-label="Widget ausblenden">✕</button></span></div><div id="vin" hidden><div class="rec"><div class="disc" id="disc" role="button" tabindex="0" aria-label="Platte drehen oder anhalten" title="Tippen: Platte drehen oder anhalten"><i class="lab" id="vlab"></i></div><i class="arm" id="arm"></i></div><p id="vt"></p></div>
+<div id="spw" class="off" role="region" aria-label="Spotify-Player"><div class="spwh" title="Zum Verschieben ziehen, Doppelklick setzt zurück"><span>♪ Spotify</span><span class="spr"><span class="seg" role="group" aria-label="Ansicht"><button id="spvl" aria-pressed="false">Liste</button><button id="spvr" aria-pressed="true">Platte</button></span><button class="x" id="spwx" aria-label="Widget ausblenden">✕</button></span></div><div id="vin" hidden><div class="rec"><div class="disc" id="disc" role="button" tabindex="0" aria-label="Platte drehen oder anhalten" title="Tippen: Platte drehen oder anhalten"><i class="lab" id="vlab"></i></div><i class="arm" id="arm"></i></div><p id="vt"></p></div>
   <div id="spp"></div></div>
 <div id="sndf"></div>
 <div id="toasts" aria-live="polite"></div>
@@ -367,7 +375,7 @@ li .mvb{color:var(--gold)}
 (function(){
 var $=function(i){return document.getElementById(i)};
 var key=function(o){var d=new Date();d.setDate(d.getDate()-(o||0));return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
-var S={ex:{n:"",d:""},subj:[],sj:{},diary:{},cs:null,spw:false,vst:5,slink:{},sfavs:[],sp:"",spbig:false,vv:0,vl:60,name:"Sophie",drink:"",mantra:"",post:true,todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
+var S={ex:{n:"",d:""},subj:[],sj:{},diary:{},cs:null,spw:false,vst:5,slink:{},sfavs:[],sp:"",vv:0,vl:60,name:"Sophie",drink:"",mantra:"",post:true,todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
 try{var r=JSON.parse(localStorage.getItem("lernstube1"));if(r)for(var k in r)S[k]=r[k]}catch(e){}
 function save(){try{localStorage.setItem("lernstube1",JSON.stringify(S))}catch(e){}}
 if(!S.mig){if(S.drink==="Tee")S.drink="";S.mig=1;save()}
@@ -579,7 +587,7 @@ function ansMsg(a){var n=today(),g=S.goal;
   else if(n>=g&&n-1<g)toast("Tagesziel erreicht","Wow"+nm()+": "+rom(n)+" Runden heute. Das darfst du feiern."+(S.diary[key()]?"":" Tipp hier für eine Tagebuchzeile."),"★",null,S.diary[key()]?null:openDiary);
   else toast(a==="yes"?"Stark":"Auch das zählt",(a==="yes"?"Voll dabei":"Eine halbe Runde zählt")+nm()+". "+(n<g?"Noch "+(g-n)+" bis zum Tagesziel.":"Ziel schon geschafft, alles darüber ist Bonus."),"✦")}
 function spParse(u){var m=u.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|album|playlist|artist|episode|show)\/([A-Za-z0-9]+)/)||u.match(/spotify:(track|album|playlist|artist|episode|show):([A-Za-z0-9]+)/);return m?{t:m[1],i:m[2]}:null}
-function spSize(){var f=$("spp").querySelector("iframe");if(f){f.style.width="100%";f.style.border="0";f.style.borderRadius="20px";f.style.height=((S.spbig&&!S.spv)?352:152)+"px"}}
+function spSize(){var f=$("spp").querySelector("iframe");if(f){f.style.width="100%";f.style.border="0";f.style.borderRadius="20px";f.style.height=(spRec()?152:352)+"px"}}
 function spFrame(m){var c=$("spp"),f=document.createElement("iframe");f.src="https://open.spotify.com/embed/"+m.t+"/"+m.i+"?theme=0";f.title="Spotify-Player";f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.loading="eager";f.referrerPolicy="strict-origin-when-cross-origin";c.replaceChildren(f);spSize()}
 function spMount(){var m=spParse(S.sp||"");if(!m){$("spp").replaceChildren();spCov(null);spView();return}spMeta();spFrame(m);spView()}
 function sp(q){var v=$("spi").value.trim(),m=spParse(v);if(!m){$("spi").value="";$("spi").placeholder="Kein gültiger Spotify-Link";return}S.sp=v;save();spMount();if(!q)spshow(true)}
@@ -592,8 +600,7 @@ $("swt").onclick=function(){spshow(!S.spw)};$("spwx").onclick=function(){spshow(
 $("sps").onclick=function(){if(!spParse($("spi").value.trim()))return;$("spnr").hidden=false;$("spn").focus()};
 function spsave(){var u=$("spi").value.trim(),n=$("spn").value.trim();if(!u||!n||!spParse(u))return;S.sfavs.push({n:n,u:u});$("spn").value="";$("spnr").hidden=true;save();spfavs()}
 $("spok").onclick=spsave;$("spn").onkeydown=function(e){if(e.key==="Enter")spsave();if(e.key==="Escape")$("spnr").hidden=true};
-$("spt").onclick=function(){S.spbig=!S.spbig;save();spSize();$("spt").textContent=S.spbig?"Kompakt":"Liste"};
-$("spt").textContent=S.spbig?"Kompakt":"Liste";$("spi").value=S.sp||"";spfavs();if(S.sp)spMount();else spView();spshow(!!(S.spw&&S.sp));
+$("spi").value=S.sp||"";spfavs();if(S.sp)spMount();else spView();spshow(!!(S.spw&&S.sp));
 var PAL=["#e8806b","#e6b450","#8fc07a","#6bb5c9","#8c9be0","#c58fd6","#e58fa5","#b8a38a"],DQ=["Was lief heute gut?","Worauf bist du heute stolz?","Was hast du heute gelernt?","Was war heute schön?"];
 function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function starRow(lit,total,nw){var d=document.createElement("div");d.className="srow";d.setAttribute("aria-hidden","true");for(var i=0;i<total;i++){var e=document.createElement("span");e.textContent="★";e.className="st"+(i<lit?" on":"")+(nw&&i===lit-1?" nw":"");d.appendChild(e)}return d}
@@ -622,8 +629,9 @@ function spSpin(){var on=spKnown?spLive:spDeco,fv=S.sfavs.filter(function(f){ret
 function discTap(){if(spKnown)return;spDeco=!spDeco;spSpin()}
 $("disc").onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();discTap()}};
 window.addEventListener("message",function(e){if(e.origin!=="https://open.spotify.com")return;var d=e.data;if(typeof d==="string"){try{d=JSON.parse(d)}catch(x){return}}if(d&&d.type==="playback_update"&&d.payload){spKnown=true;spLive=!d.payload.isPaused;spSpin()}});
-function spView(){var on=!!S.spv;$("spw").classList.toggle("vinyl",on);$("vin").hidden=!on;$("spv2").setAttribute("aria-pressed",on);spSize();spSpin();setTimeout(spClamp,60)}
-$("spv2").onclick=function(){S.spv=!S.spv;if(S.spv)spDeco=true;save();spView()};
+function spRec(){return S.spview!=="list"}
+function spView(){var on=spRec();$("spw").classList.toggle("vinyl",on);$("vin").hidden=!on;$("spvl").setAttribute("aria-pressed",!on);$("spvr").setAttribute("aria-pressed",on);spSize();spSpin();setTimeout(spClamp,60);setTimeout(spClamp,480)}
+$("spvl").onclick=function(){S.spview="list";save();spView()};$("spvr").onclick=function(){S.spview="rec";spDeco=true;save();spView()};
 function spClamp(){var w=$("spw");if(!S.spos)return;var x=Math.max(8,Math.min(window.innerWidth-w.offsetWidth-8,S.spos.x)),y=Math.max(8,Math.min(window.innerHeight-w.offsetHeight-8,S.spos.y));w.classList.add("moved");w.style.left=x+"px";w.style.top=y+"px";w.style.bottom="auto"}
 (function(){var w=$("spw"),sx=0,sy=0,ox=0,oy=0,dr=false,mv=false,tg=null;
   w.addEventListener("pointerdown",function(e){if(e.button!==0||e.target.closest("button,iframe,input,a"))return;var r=w.getBoundingClientRect();sx=e.clientX;sy=e.clientY;ox=r.left;oy=r.top;dr=true;mv=false;tg=e.target;try{w.setPointerCapture(e.pointerId)}catch(x){}});

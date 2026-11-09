@@ -288,6 +288,14 @@ li .mvb{color:var(--gold)}
 
 /* v24: kleinere Listenansicht */
 #spw:not(.vinyl){width:min(310px,calc(100vw - 32px))}
+
+/* v25: Höhe der Liste ziehbar */
+#spg{position:absolute;left:50%;bottom:1px;width:46px;height:12px;margin-left:-23px;cursor:ns-resize;touch-action:none;z-index:2}
+#spg::after{content:"";position:absolute;left:0;right:0;top:5px;height:3px;border-radius:3px;background:var(--gold);opacity:.5;transition:opacity .2s}
+#spg:hover::after{opacity:1}
+#spw.vinyl #spg{display:none}
+#spw:not(.vinyl){padding-bottom:8px}
+#spw.dragging iframe{pointer-events:none}
 </style>
 </head>
 <body data-t="kamin">
@@ -339,7 +347,7 @@ li .mvb{color:var(--gold)}
     <textarea id="dt" maxlength="160" placeholder="Eine Zeile reicht …" aria-label="Tagebuchzeile für heute" style="height:64px"></textarea>
     <ul id="dl" style="max-height:220px;overflow-y:auto"></ul>
   </div></details>
-  <p class="hint" style="margin-top:18px;text-align:center">Version 24 · Oktober 2026</p>
+  <p class="hint" style="margin-top:18px;text-align:center">Version 25 · Oktober 2026</p>
 </aside>
 
 <section id="card" aria-label="Timer">
@@ -376,7 +384,8 @@ li .mvb{color:var(--gold)}
   </div>
 </section>
 <div id="spw" class="off" role="region" aria-label="Spotify-Player"><div class="spwh" title="Zum Verschieben ziehen, Doppelklick setzt zurück"><span>♪ Spotify</span><span class="spr"><span class="seg" role="group" aria-label="Ansicht"><button id="spvl" aria-pressed="false">Liste</button><button id="spvr" aria-pressed="true">Platte</button></span><button class="x" id="spwx" aria-label="Widget ausblenden">✕</button></span></div><div id="vin" hidden><div class="rec"><div class="disc" id="disc" role="button" tabindex="0" aria-label="Platte drehen oder anhalten" title="Tippen: Platte drehen oder anhalten"><i class="lab" id="vlab"></i></div><i class="arm" id="arm"></i></div><p id="vt"></p></div>
-  <div id="spp"></div></div>
+  <div id="spp"></div>
+  <div id="spg" aria-hidden="true" title="Höhe ziehen"></div></div>
 <div id="sndf"></div>
 <div id="toasts" aria-live="polite"></div>
 <button id="pill" aria-label="Timer ausklappen"><b id="pt">25:00</b><small id="pk"></small></button>
@@ -597,7 +606,7 @@ function ansMsg(a){var n=today(),g=S.goal;
   else if(n>=g&&n-1<g)toast("Tagesziel erreicht","Wow"+nm()+": "+rom(n)+" Runden heute. Das darfst du feiern."+(S.diary[key()]?"":" Tipp hier für eine Tagebuchzeile."),"★",null,S.diary[key()]?null:openDiary);
   else toast(a==="yes"?"Stark":"Auch das zählt",(a==="yes"?"Voll dabei":"Eine halbe Runde zählt")+nm()+". "+(n<g?"Noch "+(g-n)+" bis zum Tagesziel.":"Ziel schon geschafft, alles darüber ist Bonus."),"✦")}
 function spParse(u){var m=u.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|album|playlist|artist|episode|show)\/([A-Za-z0-9]+)/)||u.match(/spotify:(track|album|playlist|artist|episode|show):([A-Za-z0-9]+)/);return m?{t:m[1],i:m[2]}:null}
-function spSize(){var f=$("spp").querySelector("iframe");if(f){f.style.width="100%";f.style.border="0";f.style.borderRadius="20px";f.style.height=(spRec()?152:232)+"px"}}
+function spSize(){var f=$("spp").querySelector("iframe");if(f){f.style.width="100%";f.style.border="0";f.style.borderRadius="20px";f.style.height=(spRec()?152:(S.splh||232))+"px"}}
 function spFrame(m){var c=$("spp"),f=document.createElement("iframe");f.src="https://open.spotify.com/embed/"+m.t+"/"+m.i+"?theme=0";f.title="Spotify-Player";f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.loading="eager";f.referrerPolicy="strict-origin-when-cross-origin";c.replaceChildren(f);spSize()}
 function spMount(){var m=spParse(S.sp||"");if(!m){$("spp").replaceChildren();spCtl=null;spCov(null);spView();return}spMeta();var uri="spotify:"+m.t+":"+m.i;
   if(spCtl){try{spCtl.loadUri(uri);spView();return}catch(e){spCtl=null}}
@@ -646,7 +655,7 @@ function spLoadApi(){if(window.__sp){spApi="ready";return}if(spApi!=="idle")retu
   var sc=document.createElement("script");sc.src="https://open.spotify.com/embed/iframe-api/v1";sc.async=true;sc.onerror=function(){spApi="failed";clearTimeout(spT);spView()};document.head.appendChild(sc);
   spT=setTimeout(function(){if(spApi==="loading"){spApi="failed";spView()}},4000)}
 function spCtlMount(){var m=spParse(S.sp||"");if(!m||!window.__sp||spCtl)return;var host=document.createElement("div");$("spp").replaceChildren(host);
-  try{window.__sp.createController(host,{uri:"spotify:"+m.t+":"+m.i,width:"100%",height:spRec()?152:232},function(ctl){spCtl=ctl;
+  try{window.__sp.createController(host,{uri:"spotify:"+m.t+":"+m.i,width:"100%",height:spRec()?152:(S.splh||232)},function(ctl){spCtl=ctl;
     try{ctl.addListener("playback_update",function(e){if(e&&e.data){spKnown=true;spLive=!e.data.isPaused;spSpin();if(spLive&&spPeek){spPeek=false;spView()}}})}catch(x){}spSize();spView()})}
   catch(e){spCtl=null;spApi="failed";spFrame(m);spView()}}
 function discTap(){if(spCtl){var was=spLive;try{spCtl.togglePlay()}catch(e){}clearTimeout(spPT);
@@ -660,13 +669,19 @@ function spView(){var on=spRec();if(on&&S.sp){if(spApi==="idle")spLoadApi();if(w
 $("spvl").onclick=function(){S.spview="list";save();spView()};$("spvr").onclick=function(){S.spview="rec";save();spView()};
 function spClamp(){var w=$("spw");if(!S.spos)return;var x=Math.max(8,Math.min(window.innerWidth-w.offsetWidth-8,S.spos.x)),y=Math.max(8,Math.min(window.innerHeight-w.offsetHeight-8,S.spos.y));w.classList.add("moved");w.style.left=x+"px";w.style.top=y+"px";w.style.bottom="auto"}
 (function(){var w=$("spw"),sx=0,sy=0,ox=0,oy=0,dr=false,mv=false,tg=null;
-  w.addEventListener("pointerdown",function(e){if(e.button!==0||e.target.closest("button,iframe,input,a"))return;var r=w.getBoundingClientRect();sx=e.clientX;sy=e.clientY;ox=r.left;oy=r.top;dr=true;mv=false;tg=e.target;try{w.setPointerCapture(e.pointerId)}catch(x){}});
+  w.addEventListener("pointerdown",function(e){if(e.button!==0||e.target.closest("button,iframe,input,a,#spg"))return;var r=w.getBoundingClientRect();sx=e.clientX;sy=e.clientY;ox=r.left;oy=r.top;dr=true;mv=false;tg=e.target;try{w.setPointerCapture(e.pointerId)}catch(x){}});
   w.addEventListener("pointermove",function(e){if(!dr)return;var dx=e.clientX-sx,dy=e.clientY-sy;if(!mv&&Math.abs(dx)+Math.abs(dy)<5)return;mv=true;w.classList.add("moved","dragging");
     w.style.left=Math.max(8,Math.min(window.innerWidth-w.offsetWidth-8,ox+dx))+"px";w.style.top=Math.max(8,Math.min(window.innerHeight-w.offsetHeight-8,oy+dy))+"px";w.style.bottom="auto"});
   w.addEventListener("pointerup",function(){if(!dr)return;dr=false;w.classList.remove("dragging");if(mv){S.spos={x:parseInt(w.style.left,10),y:parseInt(w.style.top,10)};save()}else if(tg&&tg.closest&&tg.closest("#disc"))discTap()});
   w.addEventListener("pointercancel",function(){dr=false;w.classList.remove("dragging")});
   w.addEventListener("dblclick",function(e){var hr=w.querySelector(".spwh").getBoundingClientRect();if(e.clientY<hr.top||e.clientY>hr.bottom||e.target.closest("button"))return;delete S.spos;save();w.classList.remove("moved");w.style.left=w.style.top=w.style.bottom=""});
   window.addEventListener("resize",spClamp);spClamp()})();
+(function(){var g=$("spg"),w=$("spw"),y0=0,h0=0,on=false;
+  g.addEventListener("pointerdown",function(e){var r=w.getBoundingClientRect();if(!w.classList.contains("moved")){w.classList.add("moved");w.style.left=r.left+"px";w.style.top=r.top+"px";w.style.bottom="auto"}
+    y0=e.clientY;h0=S.splh||232;on=true;w.classList.add("dragging");try{g.setPointerCapture(e.pointerId)}catch(x){}});
+  g.addEventListener("pointermove",function(e){if(!on)return;S.splh=Math.max(152,Math.min(352,Math.round(h0+e.clientY-y0)));spSize()});
+  function end(){if(!on)return;on=false;w.classList.remove("dragging");var r=w.getBoundingClientRect();S.spos={x:Math.round(r.left),y:Math.round(r.top)};save();setTimeout(spClamp,50)}
+  g.addEventListener("pointerup",end);g.addEventListener("pointercancel",end)})();
 /* Seitenleiste */
 function sbar(o){S.sb=o;$("sb").classList.toggle("open",o);document.body.classList.toggle("sbo",o);$("tg").setAttribute("aria-expanded",o);save()}
 $("tg").onclick=function(){sbar(!$("sb").classList.contains("open"))};

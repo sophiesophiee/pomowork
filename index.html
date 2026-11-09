@@ -51,7 +51,7 @@ li input{accent-color:var(--gold);width:17px;height:17px}li .x{border:0;backgrou
 .snd{display:flex;align-items:center;gap:10px;margin:8px 0}.snd label{width:92px}.snd input{flex:1;accent-color:var(--gold)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.chips a{border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.8rem;padding:5px 10px;border-radius:999px}
 .hint{color:var(--soft);font-size:.8rem;margin:8px 0 0}
-.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.themes button{border:2px solid transparent;border-radius:14px;background:rgba(0,0,0,.25);padding:7px 0;font-size:.68rem}
+.themes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.themes button{border:2px solid transparent;border-radius:14px;background:rgba(0,0,0,.25);padding:7px 0;font-size:.68rem}
 .themes button[aria-pressed="true"]{border-color:var(--gold)}.themes i{display:block;width:24px;height:24px;border-radius:50%;margin:0 auto 4px}
 .bar{height:10px;background:rgba(0,0,0,.35);border-radius:99px;overflow:hidden;margin:8px 0}.bar div{height:100%;background:var(--gold);width:0;transition:width .5s}
 .stats{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.9rem}
@@ -296,6 +296,23 @@ li .mvb{color:var(--gold)}
 #spw.vinyl #spg{display:none}
 #spw:not(.vinyl){padding-bottom:8px}
 #spw.dragging iframe{pointer-events:none}
+
+/* v26: Café-Welt (Herbst) */
+body[data-t="cafe"]{--sky1:#17231c;--sky2:#34452f;--gold:#f2b45a;--ink:#f7ecd9;--soft:#c9b690;--glass:rgba(28,40,32,.7);--tint:rgba(60,80,40,.25);--line:rgba(242,180,90,.3);--on:#1b261e;--brk:#d98a5b}
+#cup,#snl{display:none}
+body[data-t="cafe"] #cup{display:block}body[data-t="cafe"] #owl{display:none}
+body[data-t="cafe"] #snf{display:none}body[data-t="cafe"] #snl{display:block}
+.run #snl{animation:lspin 3.2s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes lspin{to{transform:rotate(360deg)}}
+.stm{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:0}
+.run .stm{animation:steam 2.6s ease-in-out infinite}.run .stm.s2{animation-delay:.8s}.run .stm.s3{animation-delay:1.6s}
+@keyframes steam{0%{transform:translateY(5px);opacity:0}30%{opacity:.75}100%{transform:translateY(-9px);opacity:0}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+.lf{position:absolute;top:-40px;animation:lfall linear infinite;will-change:transform}
+@keyframes lfall{0%{transform:translate3d(0,-40px,0) rotate(0)}25%{transform:translate3d(var(--sw),25vh,0) rotate(calc(var(--rt)*.25))}50%{transform:translate3d(calc(var(--sw)*-.6),55vh,0) rotate(calc(var(--rt)*.5))}75%{transform:translate3d(var(--sw),85vh,0) rotate(calc(var(--rt)*.75))}100%{transform:translate3d(0,112vh,0) rotate(var(--rt))}}
+.bk{display:none;position:absolute;border-radius:50%;filter:blur(7px);opacity:.4;animation:bkt 7s ease-in-out infinite}@keyframes bkt{50%{opacity:.12;transform:scale(1.2)}}
+body[data-t="cafe"] #scene .bk{display:block}body[data-t="cafe"] #scene .star,body[data-t="cafe"] #scene .candle{display:none}
+body[data-t="cafe"] #scene::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:repeating-linear-gradient(0deg,rgba(255,240,215,.07) 0 30px,transparent 30px 60px),repeating-linear-gradient(90deg,rgba(255,240,215,.07) 0 30px,transparent 30px 60px);-webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent)}
+@media (prefers-reduced-motion:reduce){.lf,.bk,.run .stm,.run #snl{animation:none}}
 </style>
 </head>
 <body data-t="kamin">
@@ -303,7 +320,7 @@ li .mvb{color:var(--gold)}
   <symbol id="snitch" viewBox="-30 -14 60 28"><path class="sw" d="M-6 0Q-20-12-29-4Q-20 3-6 2zM6 0Q20-12 29-4Q20 3 6 2z"/><circle class="sb" r="7"/></symbol>
   <symbol id="owlsil" viewBox="0 0 120 70"><path fill="#f3ead3" d="M60 18c6 0 10 4 11 9l4 2c3 2 4 6 3 9-1 8-6 14-14 17l-4 2-4-2c-8-3-13-9-14-17-1-3 0-7 3-9l4-2c1-5 5-9 11-9z"/><path fill="#f3ead3" d="M50 38C34 22 14 24 2 34c14 2 22 8 32 18zM70 38c16-16 36-14 48-4-14 2-22 8-32 18z"/><circle cx="53" cy="27" r="3" fill="#1a1420"/><circle cx="67" cy="27" r="3" fill="#1a1420"/><rect x="38" y="42" width="32" height="14" rx="3" fill="#fff6df" transform="rotate(-8 54 49)"/></symbol>
 </svg>
-<div id="scene"></div><div id="bg"></div><div id="shade"></div>
+<div id="scene"></div><div id="bg"></div><div id="shade"></div><div id="fx" aria-hidden="true"></div>
 
 <button class="ib" id="tg" aria-label="Einstellungen ein- oder ausklappen" aria-expanded="false"><svg viewBox="0 0 24 24"><line class="l1" x1="4" y1="7" x2="20" y2="7"/><line class="l2" x1="4" y1="12" x2="20" y2="12"/><line class="l3" x1="4" y1="17" x2="20" y2="17"/></svg></button>
 <div id="mw"><input type="range" id="mv" min="0" max="100" value="0" aria-label="Video-Lautstärke"><button id="mu" aria-label="Video-Ton an oder aus">🔇</button><button id="vp" aria-label="Video pausieren">❚❚</button></div>
@@ -331,6 +348,7 @@ li .mvb{color:var(--gold)}
     <label class="chk2"><input type="checkbox" id="pp"> Nachrichten von Hedwig</label>
     <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="sm" id="nb">🔔 Benachrichtigungen erlauben</button></div><p class="hint" id="ns"></p>
     <h4 class="sec">Stimmung</h4><div class="themes" id="themes"></div>
+    <label class="chk2"><input type="checkbox" id="fxc"> Animierte Effekte (Blätter)</label>
     <h4 class="sec">Fächer</h4>
     <div class="add"><input type="text" id="sfn" placeholder="Neues Fach" maxlength="20" aria-label="Neues Fach"><button class="sm" id="sfa">+</button></div>
     <div class="chips" id="sfl"></div>
@@ -347,7 +365,7 @@ li .mvb{color:var(--gold)}
     <textarea id="dt" maxlength="160" placeholder="Eine Zeile reicht …" aria-label="Tagebuchzeile für heute" style="height:64px"></textarea>
     <ul id="dl" style="max-height:220px;overflow-y:auto"></ul>
   </div></details>
-  <p class="hint" style="margin-top:18px;text-align:center">Version 25 · Oktober 2026</p>
+  <p class="hint" style="margin-top:18px;text-align:center">Version 26 · Oktober 2026</p>
 </aside>
 
 <section id="card" aria-label="Timer">
@@ -358,6 +376,8 @@ li .mvb{color:var(--gold)}
   <div class="dw"><svg class="dial" id="dial" viewBox="0 0 240 240" role="img" aria-label="Timer mit goldenem Schnatz">
     <circle class="ring-bg" cx="120" cy="120" r="104"/>
     <circle class="ring" id="ring" cx="120" cy="120" r="104" stroke-dasharray="654" stroke-dashoffset="0"/>
+    <g id="cup" transform="translate(120 66)"><ellipse cx="0" cy="24" rx="25" ry="5" fill="#e3cfae"/><path d="M-17 -2h34v10c0 11-8 17-17 17s-17-6-17-17z" fill="#f6ead5"/><ellipse cx="0" cy="-2" rx="17" ry="4" fill="#6b3f22"/><path d="M17 3c9-2 10 10 0 11" fill="none" stroke="#f6ead5" stroke-width="3.5" stroke-linecap="round"/>
+  <path class="stm" d="M-7 -8c-4-5 4-8 0-14"/><path class="stm s2" d="M0 -8c-4-5 4-8 0-14"/><path class="stm s3" d="M7 -8c-4-5 4-8 0-14"/></g>
     <g id="owl" transform="translate(120 66)">
       <ellipse class="ow2" cx="0" cy="12" rx="17" ry="20"/><ellipse class="ow" cx="0" cy="4" rx="16" ry="18"/>
       <path class="ow2" d="M-16 -8l5-9 6 5zM16 -8l-5-9-6 5z"/>
@@ -369,7 +389,7 @@ li .mvb{color:var(--gold)}
     </g>
     <text class="tm" id="time" x="120" y="150" text-anchor="middle">25:00</text>
     <text class="sub" id="lab" x="120" y="176" text-anchor="middle">Fokus</text>
-    <g id="sn" style="transform:translate(120px,16px);transition:none"><g id="snf"><path class="sw wl" d="M-6 0Q-20-12-29-4Q-20 3-6 2z"/><path class="sw wr" d="M6 0Q20-12 29-4Q20 3 6 2z"/><circle class="sb" r="7"/></g></g>
+    <g id="sn" style="transform:translate(120px,16px);transition:none"><g id="snl"><path transform="translate(-9 -9) scale(.75)" d="M12 1.5l1.9 3.8 3.2-1.4-.7 4.2 3.9-1-2.2 3.5 2.8 1.3-4.7 2.6.5 2.3-3.9-1.3V22h-1.6v-4.5L7.3 18.8l.5-2.3-4.7-2.6 2.8-1.3-2.2-3.5 3.9 1-.7-4.2 3.2 1.4z" fill="#e8913a"/></g><g id="snf"><path class="sw wl" d="M-6 0Q-20-12-29-4Q-20 3-6 2z"/><path class="sw wr" d="M6 0Q20-12 29-4Q20 3 6 2z"/><circle class="sb" r="7"/></g></g>
   </svg><div id="spk"></div></div>
   <p class="msg" id="msg"></p>
   <div class="row"><button class="go" id="go">Start</button><button class="rs" id="reset" aria-label="Zurücksetzen">↺</button></div>
@@ -402,6 +422,7 @@ if(!S.mig){if(S.drink==="Tee")S.drink="";S.mig=1;save()}
 /* Szene */
 var sc=$("scene");
 for(var i=0;i<70;i++){var s=document.createElement("i");s.className="star";s.style.cssText="left:"+Math.random()*100+"%;top:"+Math.random()*80+"%;animation-delay:"+Math.random()*3+"s;opacity:"+(.3+Math.random()*.7);sc.appendChild(s)}
+for(var b2=0;b2<18;b2++){var bk=document.createElement("i");bk.className="bk";var bs=18+Math.random()*50;bk.style.cssText="left:"+Math.random()*100+"%;top:"+Math.random()*62+"%;width:"+bs+"px;height:"+bs+"px;background:"+["#f2b45a","#e8913a","#ffd98a","#f7c98b"][b2%4]+";animation-delay:-"+Math.random()*6+"s;animation-duration:"+(5+Math.random()*5)+"s";sc.appendChild(bk)}
 for(var j=0;j<9;j++){var c=document.createElement("div");c.className="candle";c.style.cssText="left:"+(6+j*11+Math.random()*4)+"%;top:"+(8+Math.random()*34)+"%;animation-delay:-"+Math.random()*7+"s;animation-duration:"+(6+Math.random()*4)+"s";sc.appendChild(c)}
 
 /* Timer */
@@ -421,7 +442,7 @@ function render(){
   $("dial").setAttribute("class","dial"+(running?" run":""));
   $("owl").setAttribute("class",brk&&running?"slp":"");
   $("go").textContent=running?"Pause":(left<full?"Weiter":"Start");
-  $("msg").textContent=running?(brk?"Hedwig döst, du auch ein bisschen.":pep):(left<full?"Pausiert. Der Schnatz wartet.":(mode==="focus"?hi()+"! Bereit für eine Runde?":MODES[mode].idle));
+  $("msg").textContent=running?(brk?"Hedwig döst, du auch ein bisschen.":pep):(left<full?"Pausiert. Der Schnatz wartet.":(mode==="focus"?hi()+"! Bereit für eine Runde?":MODES[mode].idle));$("msg").textContent=ct($("msg").textContent);
   document.querySelectorAll("#tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.m===mode)});
   var t=activeTask(),el=$("task");el.innerHTML="";if(t){var b=document.createElement("b");b.textContent=t.t;el.append("Dran: ",b)}else el.textContent="Füge unten eine Aufgabe hinzu.";
   var n=cyc%4,d=$("dots");d.innerHTML="";for(var i=0;i<4;i++){var o=document.createElement("span");o.className="dot"+(i<n?" on":"");d.appendChild(o)}
@@ -523,8 +544,8 @@ $("gm").onclick=function(){S.goal=Math.max(1,S.goal-1);save();stats()};$("gp").o
 $("bc").onclick=function(){var t=$("bt");t.select();try{navigator.clipboard.writeText(t.value).then(function(){$("bc").textContent="Kopiert ✓"},function(){document.execCommand("copy")})}catch(e){try{document.execCommand("copy")}catch(_){}}setTimeout(function(){$("bc").textContent="Status kopieren"},1800)};
 
 /* Stimmungen */
-var TH=[["kamin","Kamin","#f0a050"],["nacht","Nacht","#e8d27a"],["eule","Eule","#e9f0ff"]];
-function theme(t){S.theme=t;document.body.setAttribute("data-t",t);document.querySelectorAll("#themes button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.t===t)});save()}
+var TH=[["kamin","Kamin","#f0a050"],["nacht","Nacht","#e8d27a"],["eule","Eule","#e9f0ff"],["cafe","Café","#f2b45a"]];
+function theme(t){S.theme=t;document.body.setAttribute("data-t",t);if(typeof fxSync==="function")fxSync();document.querySelectorAll("#themes button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.t===t)});save()}
 TH.forEach(function(t){var b=document.createElement("button");b.dataset.t=t[0];var i=document.createElement("i");i.style.background=t[2];b.append(i,t[1]);b.onclick=function(){theme(t[0])};$("themes").appendChild(b)});
 
 /* Sounds (YouTube-Loops) */
@@ -586,7 +607,9 @@ var TIPS=["Trink einen Schluck Wasser.","Streck dich kurz.","Schau mal aus dem F
 function dockpos(){var T=$("toasts"),m=Math.max(16,window.innerHeight*.03),h=S.cm?$("pill").offsetHeight:$("card").offsetHeight,room=window.innerHeight-h-m-16-80;
   if(!S.cm&&room<230&&window.innerWidth>760){T.style.right=($("card").offsetWidth+m+16)+"px";T.style.bottom=m+"px"}else{T.style.right="";T.style.bottom=(h+m+16)+"px"}}
 if(window.ResizeObserver)new ResizeObserver(dockpos).observe($("card"));window.addEventListener("resize",dockpos);
-function toast(t,m,ic,node,act){if(S.post===false)return;var c=$("toasts"),e=document.createElement("div");e.className="toast";
+var CT=[["Post von Hedwig","Post vom Café"],["Der Schnatz fliegt, du auch.","Die Tasse ist noch warm."],["Handy weg, Kerze an.","Handy weg, Tasse an."],["die Kerzen brennen","der Kaffee duftet"],["Hedwig döst, du auch ein bisschen.","Die Tasse dampft, du auch ein bisschen."],["Der Schnatz wartet.","Die Tasse wartet."]];
+function ct(x){if(S.theme!=="cafe"||typeof x!=="string")return x;CT.forEach(function(p){x=x.split(p[0]).join(p[1])});return x}
+function toast(t,m,ic,node,act){t=ct(t);m=ct(m);if(S.post===false)return;var c=$("toasts"),e=document.createElement("div");e.className="toast";
   var i=document.createElement("i");i.className="seal";i.textContent=ic||"✦";var b=document.createElement("b");b.textContent=t;var p=document.createElement("p");p.textContent=m;e.append(i,b,p);if(node)e.appendChild(node);
   var kill=function(){if(e._k)return;e._k=1;e.classList.add("out");setTimeout(function(){e.remove()},450)};e.onclick=act?function(){act();kill()}:kill;
   e.addEventListener("pointermove",function(ev){var r=e.getBoundingClientRect();e.style.setProperty("--ry",((ev.clientX-r.left)/r.width-.5)*14+"deg");e.style.setProperty("--rx",-((ev.clientY-r.top)/r.height-.5)*12+"deg")});
@@ -682,6 +705,11 @@ function spClamp(){var w=$("spw");if(!S.spos)return;var x=Math.max(8,Math.min(wi
   g.addEventListener("pointermove",function(e){if(!on)return;S.splh=Math.max(152,Math.min(352,Math.round(h0+e.clientY-y0)));spSize()});
   function end(){if(!on)return;on=false;w.classList.remove("dragging");var r=w.getBoundingClientRect();S.spos={x:Math.round(r.left),y:Math.round(r.top)};save();setTimeout(spClamp,50)}
   g.addEventListener("pointerup",end);g.addEventListener("pointercancel",end)})();
+var LC=["#e8913a","#c8501f","#d9a21b","#a63d1f","#9c7a2b"],MAPLE="M12 1.5l1.9 3.8 3.2-1.4-.7 4.2 3.9-1-2.2 3.5 2.8 1.3-4.7 2.6.5 2.3-3.9-1.3V22h-1.6v-4.5L7.3 18.8l.5-2.3-4.7-2.6 2.8-1.3-2.2-3.5 3.9 1-.7-4.2 3.2 1.4z";
+function fxSync(){var f=$("fx");f.innerHTML="";if(!(S.theme==="cafe"&&S.fx!==false&&!REDUCED))return;var ns="http://www.w3.org/2000/svg";
+  for(var i=0;i<16;i++){var e=document.createElementNS(ns,"svg"),p=document.createElementNS(ns,"path"),z=16+Math.random()*16,d=9+Math.random()*9;e.setAttribute("viewBox","0 0 24 24");e.setAttribute("class","lf");p.setAttribute("d",MAPLE);p.setAttribute("fill",LC[i%LC.length]);e.appendChild(p);
+    e.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;width:"+z.toFixed(0)+"px;height:"+z.toFixed(0)+"px;--sw:"+((Math.random()<.5?-1:1)*(25+Math.random()*60)).toFixed(0)+"px;--rt:"+((Math.random()<.5?-1:1)*(200+Math.random()*340)).toFixed(0)+"deg;animation-duration:"+d.toFixed(1)+"s;animation-delay:-"+(Math.random()*d).toFixed(1)+"s;opacity:"+(.55+Math.random()*.4).toFixed(2);f.appendChild(e)}}
+$("fxc").checked=S.fx!==false;$("fxc").onchange=function(){S.fx=$("fxc").checked;save();fxSync()};
 /* Seitenleiste */
 function sbar(o){S.sb=o;$("sb").classList.toggle("open",o);document.body.classList.toggle("sbo",o);$("tg").setAttribute("aria-expanded",o);save()}
 $("tg").onclick=function(){sbar(!$("sb").classList.contains("open"))};

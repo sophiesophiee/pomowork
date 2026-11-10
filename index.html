@@ -11,7 +11,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Lernstube">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IM+Fell+English:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IM+Fell+English:ital@0;1&family=Caveat:wght@500;600&display=swap">
 <style>
 :root{--sky1:#1a0f12;--sky2:#3a1a14;--gold:#f0a050;--ink:#f3e6c8;--soft:#bfa98a;--glass:rgba(30,16,14,.66);--tint:rgba(120,40,10,.25);--line:rgba(240,160,80,.28);--on:#1a0f12;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -313,6 +313,29 @@ body[data-t="cafe"] #snf{display:none}body[data-t="cafe"] #snl{display:block}
 body[data-t="cafe"] #scene .bk{display:block}body[data-t="cafe"] #scene .star,body[data-t="cafe"] #scene .candle{display:none}
 body[data-t="cafe"] #scene::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:repeating-linear-gradient(0deg,rgba(255,240,215,.07) 0 30px,transparent 30px 60px),repeating-linear-gradient(90deg,rgba(255,240,215,.07) 0 30px,transparent 30px 60px);-webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent)}
 @media (prefers-reduced-motion:reduce){.lf,.bk,.run .stm,.run #snl{animation:none}}
+
+/* v27: mehr Café-Gimmicks */
+body[data-t="cafe"] #tl li .t,body[data-t="cafe"] #tl2 li .t,body[data-t="cafe"] .tdt span{font-family:"Caveat","Cormorant Garamond",cursive;font-size:1.12rem;font-weight:600;letter-spacing:.01em;text-shadow:0 0 1px rgba(255,255,255,.3)}
+body[data-t="cafe"] .tdt span{font-size:1.5rem}
+body[data-t="cafe"] #tl li,body[data-t="cafe"] #tl2 li{border-bottom:1px dashed var(--line)}
+body[data-t="cafe"] .st{font-size:1.9rem}
+
+/* v28: Winter in der Café-Welt */
+body[data-t="cafe"][data-season="winter"]{--sky1:#101822;--sky2:#2b3f57;--gold:#f4c27c;--ink:#eef4fb;--soft:#a9bbd0;--glass:rgba(20,30,46,.7);--tint:rgba(70,100,150,.22);--line:rgba(244,194,124,.3);--on:#141c2a;--brk:#8fc7d8}
+#snw{display:none}
+body[data-t="cafe"][data-season="winter"] #snl{display:none}body[data-t="cafe"][data-season="winter"] #snw{display:block}
+.run #snw{animation:lspin 6s linear infinite;transform-box:fill-box;transform-origin:center}
+body[data-t="cafe"][data-season="winter"] #cup .cb{fill:#d9684f}body[data-t="cafe"][data-season="winter"] #cup .ch{stroke:#d9684f}
+body[data-t="cafe"][data-season="winter"] .run .stm{animation-duration:2s}
+.sf{position:absolute;top:-12px;border-radius:50%;background:#fff;animation:sfall linear infinite;will-change:transform}
+@keyframes sfall{0%{transform:translate3d(0,-12px,0)}50%{transform:translate3d(var(--sw),55vh,0)}100%{transform:translate3d(calc(var(--sw)*-.5),108vh,0)}}
+#frost{display:none;position:fixed;inset:0;pointer-events:none;z-index:5;background:radial-gradient(ellipse at center,transparent 58%,rgba(210,235,255,.16) 100%),radial-gradient(circle at 0 0,rgba(230,245,255,.34),transparent 22%),radial-gradient(circle at 100% 0,rgba(230,245,255,.3),transparent 20%),radial-gradient(circle at 0 100%,rgba(230,245,255,.3),transparent 20%),radial-gradient(circle at 100% 100%,rgba(230,245,255,.34),transparent 22%)}
+body[data-t="cafe"][data-season="winter"] #frost{display:block}
+body[data-t="cafe"][data-season="winter"] #scene::after{background:linear-gradient(to top,rgba(236,246,255,.34),transparent 85%)}
+body[data-t="cafe"][data-season="winter"] .bk:nth-child(odd){filter:blur(7px) hue-rotate(185deg) saturate(.7)}
+body[data-t="cafe"][data-season="winter"] #card,body[data-t="cafe"][data-season="winter"] aside{box-shadow:inset 0 0 22px rgba(190,225,255,.12),0 14px 0 -6px var(--track,transparent)}
+.seg.wide{display:flex;margin:12px 0 4px}.seg.wide button{flex:1;padding:6px 0;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){.sf,.run #snw{animation:none}}
 </style>
 </head>
 <body data-t="kamin">
@@ -320,7 +343,7 @@ body[data-t="cafe"] #scene::after{content:"";position:absolute;left:0;right:0;bo
   <symbol id="snitch" viewBox="-30 -14 60 28"><path class="sw" d="M-6 0Q-20-12-29-4Q-20 3-6 2zM6 0Q20-12 29-4Q20 3 6 2z"/><circle class="sb" r="7"/></symbol>
   <symbol id="owlsil" viewBox="0 0 120 70"><path fill="#f3ead3" d="M60 18c6 0 10 4 11 9l4 2c3 2 4 6 3 9-1 8-6 14-14 17l-4 2-4-2c-8-3-13-9-14-17-1-3 0-7 3-9l4-2c1-5 5-9 11-9z"/><path fill="#f3ead3" d="M50 38C34 22 14 24 2 34c14 2 22 8 32 18zM70 38c16-16 36-14 48-4-14 2-22 8-32 18z"/><circle cx="53" cy="27" r="3" fill="#1a1420"/><circle cx="67" cy="27" r="3" fill="#1a1420"/><rect x="38" y="42" width="32" height="14" rx="3" fill="#fff6df" transform="rotate(-8 54 49)"/></symbol>
 </svg>
-<div id="scene"></div><div id="bg"></div><div id="shade"></div><div id="fx" aria-hidden="true"></div>
+<div id="scene"></div><div id="bg"></div><div id="shade"></div><div id="fx" aria-hidden="true"></div><div id="frost" aria-hidden="true"></div>
 
 <button class="ib" id="tg" aria-label="Einstellungen ein- oder ausklappen" aria-expanded="false"><svg viewBox="0 0 24 24"><line class="l1" x1="4" y1="7" x2="20" y2="7"/><line class="l2" x1="4" y1="12" x2="20" y2="12"/><line class="l3" x1="4" y1="17" x2="20" y2="17"/></svg></button>
 <div id="mw"><input type="range" id="mv" min="0" max="100" value="0" aria-label="Video-Lautstärke"><button id="mu" aria-label="Video-Ton an oder aus">🔇</button><button id="vp" aria-label="Video pausieren">❚❚</button></div>
@@ -345,10 +368,12 @@ body[data-t="cafe"] #scene::after{content:"";position:absolute;left:0;right:0;bo
     <div class="fld"><label for="nm">Name</label><input type="text" id="nm" maxlength="20"></div>
     <div class="fld"><label for="dr">Getränk</label><input type="text" id="dr" placeholder="z. B. Tee" maxlength="20"></div>
     <div class="fld"><label for="mn">Mantra</label><input type="text" id="mn" placeholder="optional" maxlength="60"></div>
+    <div class="fld"><label for="bk">Buch</label><input type="text" id="bk" placeholder="optional" maxlength="40"></div>
     <label class="chk2"><input type="checkbox" id="pp"> Nachrichten von Hedwig</label>
     <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="sm" id="nb">🔔 Benachrichtigungen erlauben</button></div><p class="hint" id="ns"></p>
     <h4 class="sec">Stimmung</h4><div class="themes" id="themes"></div>
-    <label class="chk2"><input type="checkbox" id="fxc"> Animierte Effekte (Blätter)</label>
+    <div class="seg wide" id="ssn" hidden role="group" aria-label="Jahreszeit"><button data-s="herbst" aria-pressed="true">Herbst</button><button data-s="winter" aria-pressed="false">Winter</button></div>
+    <label class="chk2"><input type="checkbox" id="fxc"> Animierte Effekte (Blätter, Schnee)</label>
     <h4 class="sec">Fächer</h4>
     <div class="add"><input type="text" id="sfn" placeholder="Neues Fach" maxlength="20" aria-label="Neues Fach"><button class="sm" id="sfa">+</button></div>
     <div class="chips" id="sfl"></div>
@@ -365,7 +390,7 @@ body[data-t="cafe"] #scene::after{content:"";position:absolute;left:0;right:0;bo
     <textarea id="dt" maxlength="160" placeholder="Eine Zeile reicht …" aria-label="Tagebuchzeile für heute" style="height:64px"></textarea>
     <ul id="dl" style="max-height:220px;overflow-y:auto"></ul>
   </div></details>
-  <p class="hint" style="margin-top:18px;text-align:center">Version 26 · Oktober 2026</p>
+  <p class="hint" style="margin-top:18px;text-align:center">Version 28 · Oktober 2026</p>
 </aside>
 
 <section id="card" aria-label="Timer">
@@ -376,7 +401,7 @@ body[data-t="cafe"] #scene::after{content:"";position:absolute;left:0;right:0;bo
   <div class="dw"><svg class="dial" id="dial" viewBox="0 0 240 240" role="img" aria-label="Timer mit goldenem Schnatz">
     <circle class="ring-bg" cx="120" cy="120" r="104"/>
     <circle class="ring" id="ring" cx="120" cy="120" r="104" stroke-dasharray="654" stroke-dashoffset="0"/>
-    <g id="cup" transform="translate(120 66)"><ellipse cx="0" cy="24" rx="25" ry="5" fill="#e3cfae"/><path d="M-17 -2h34v10c0 11-8 17-17 17s-17-6-17-17z" fill="#f6ead5"/><ellipse cx="0" cy="-2" rx="17" ry="4" fill="#6b3f22"/><path d="M17 3c9-2 10 10 0 11" fill="none" stroke="#f6ead5" stroke-width="3.5" stroke-linecap="round"/>
+    <g id="cup" transform="translate(120 66)"><ellipse cx="0" cy="24" rx="25" ry="5" fill="#e3cfae"/><path class="cb" d="M-17 -2h34v10c0 11-8 17-17 17s-17-6-17-17z" fill="#f6ead5"/><ellipse cx="0" cy="-2" rx="17" ry="4" fill="#6b3f22"/><path class="ch" d="M17 3c9-2 10 10 0 11" fill="none" stroke="#f6ead5" stroke-width="3.5" stroke-linecap="round"/>
   <path class="stm" d="M-7 -8c-4-5 4-8 0-14"/><path class="stm s2" d="M0 -8c-4-5 4-8 0-14"/><path class="stm s3" d="M7 -8c-4-5 4-8 0-14"/></g>
     <g id="owl" transform="translate(120 66)">
       <ellipse class="ow2" cx="0" cy="12" rx="17" ry="20"/><ellipse class="ow" cx="0" cy="4" rx="16" ry="18"/>
@@ -389,7 +414,7 @@ body[data-t="cafe"] #scene::after{content:"";position:absolute;left:0;right:0;bo
     </g>
     <text class="tm" id="time" x="120" y="150" text-anchor="middle">25:00</text>
     <text class="sub" id="lab" x="120" y="176" text-anchor="middle">Fokus</text>
-    <g id="sn" style="transform:translate(120px,16px);transition:none"><g id="snl"><path transform="translate(-9 -9) scale(.75)" d="M12 1.5l1.9 3.8 3.2-1.4-.7 4.2 3.9-1-2.2 3.5 2.8 1.3-4.7 2.6.5 2.3-3.9-1.3V22h-1.6v-4.5L7.3 18.8l.5-2.3-4.7-2.6 2.8-1.3-2.2-3.5 3.9 1-.7-4.2 3.2 1.4z" fill="#e8913a"/></g><g id="snf"><path class="sw wl" d="M-6 0Q-20-12-29-4Q-20 3-6 2z"/><path class="sw wr" d="M6 0Q20-12 29-4Q20 3 6 2z"/><circle class="sb" r="7"/></g></g>
+    <g id="sn" style="transform:translate(120px,16px);transition:none"><g id="snl"><path transform="translate(-9 -9) scale(.75)" d="M12 1.5l1.9 3.8 3.2-1.4-.7 4.2 3.9-1-2.2 3.5 2.8 1.3-4.7 2.6.5 2.3-3.9-1.3V22h-1.6v-4.5L7.3 18.8l.5-2.3-4.7-2.6 2.8-1.3-2.2-3.5 3.9 1-.7-4.2 3.2 1.4z" fill="#e8913a"/></g><g id="snw"><path d="M0-8V8M-7-4L7 4M-7 4L7-4" fill="none" stroke="#e8f4ff" stroke-width="1.7" stroke-linecap="round"/></g><g id="snf"><path class="sw wl" d="M-6 0Q-20-12-29-4Q-20 3-6 2z"/><path class="sw wr" d="M6 0Q20-12 29-4Q20 3 6 2z"/><circle class="sb" r="7"/></g></g>
   </svg><div id="spk"></div></div>
   <p class="msg" id="msg"></p>
   <div class="row"><button class="go" id="go">Start</button><button class="rs" id="reset" aria-label="Zurücksetzen">↺</button></div>
@@ -451,7 +476,10 @@ function render(){
   $("mt").textContent=hi()+" · tempus fugit";
   document.title=(running?fmt(left)+" · ":"")+"Lernstube";
 }
-function chime(){try{var C=new(window.AudioContext||window.webkitAudioContext)(),t=C.currentTime,m=C.createGain(),d=C.createDelay(),fb=C.createGain();
+function bell(){try{var C=new(window.AudioContext||window.webkitAudioContext)(),t=C.currentTime,m=C.createGain();m.gain.value=.5;m.connect(C.destination);
+  [[2093,0],[1568,.17],[2093,.4]].forEach(function(n){[[1,.12,.9],[2.76,.04,.4],[4.07,.02,.2]].forEach(function(p){var o=C.createOscillator(),g=C.createGain(),st=t+n[1];o.type="sine";o.frequency.value=n[0]*p[0];g.gain.setValueAtTime(.0001,st);g.gain.exponentialRampToValueAtTime(p[1],st+.008);g.gain.exponentialRampToValueAtTime(.0001,st+p[2]);o.connect(g);g.connect(m);o.start(st);o.stop(st+p[2]+.05)})});
+  setTimeout(function(){try{C.close()}catch(e){}},2500)}catch(e){}}
+function chime(){if(S.theme==="cafe")return bell();try{var C=new(window.AudioContext||window.webkitAudioContext)(),t=C.currentTime,m=C.createGain(),d=C.createDelay(),fb=C.createGain();
   m.gain.value=.5;d.delayTime.value=.19;fb.gain.value=.3;m.connect(C.destination);m.connect(d);d.connect(fb);fb.connect(d);d.connect(C.destination);
   [1046.5,1318.5,1568,2093,1568,2637].forEach(function(f,i){var st=t+i*.11+Math.random()*.012;[1,2.01].forEach(function(r,j){var o=C.createOscillator(),g=C.createGain();o.type="sine";o.frequency.value=f*r;
     g.gain.setValueAtTime(.0001,st);g.gain.exponentialRampToValueAtTime(j?.035:.11,st+.012);g.gain.exponentialRampToValueAtTime(.0001,st+(j?.5:.9));o.connect(g);g.connect(m);o.start(st);o.stop(st+1)})});
@@ -469,7 +497,7 @@ function finish(){
   if(!wasF)finMsg(false);var next=wasF?(cyc%4===0?"long":"short"):"focus";left=0;render();$("msg").textContent=wasF?"Geschafft"+nm()+"! Gönn dir eine kleine Pause.":"Pause vorbei, weiter geht’s.";
   pn=next;var fm=mode;setTimeout(function(){if(running||mode!==fm)return;pn=null;mode=next;left=MODES[next].min*60000;render()},2600);
 }
-function start(){if(left<=0&&pn){mode=pn;left=MODES[pn].min*60000;pn=null}var first=left>=MODES[mode].min*60000-1000;running=true;endAt=Date.now()+left;if(first){flags={};if(mode==="focus")startMsg()}var pool=PEP.concat(S.name?["Du schaffst das, "+S.name+".",S.name+", ein Schritt nach dem anderen.","Stark, "+S.name+". Weiter so."]:[]);pep=pool[Math.floor(Math.random()*pool.length)];clearInterval(tick);$("chk").classList.remove("on");
+function start(){if(left<=0&&pn){mode=pn;left=MODES[pn].min*60000;pn=null}var first=left>=MODES[mode].min*60000-1000;running=true;endAt=Date.now()+left;if(first){flags={};if(mode==="focus")startMsg()}var pool=PEP.concat((S.theme==="cafe"&&season()==="winter")?["Draußen schneit es, hier ist es warm.","Eine heiße Tasse, eine ruhige Runde."]:[]).concat(S.name?["Du schaffst das, "+S.name+".",S.name+", ein Schritt nach dem anderen.","Stark, "+S.name+". Weiter so."]:[]);pep=pool[Math.floor(Math.random()*pool.length)];clearInterval(tick);$("chk").classList.remove("on");
   var fn=function(){left=endAt-Date.now();if(left<=0)finish();else{miles();render()}};
   if(W){W.onmessage=fn;W.postMessage("go")}else tick=setInterval(fn,250);render()}
 $("go").onclick=function(){if(running){left=endAt-Date.now();stop();render()}else start()};
@@ -530,7 +558,7 @@ $("ta").onclick=addTodo;$("ti").onkeydown=function(e){if(e.key==="Enter")addTodo
 /* Ziele */
 function stats(){var n=today(),g=S.goal;$("gv").textContent=g;
   $("gt").textContent=n>=g?"Ziel geschafft! "+n+"/"+g:n+" von "+g+" Runden";
-  var s=0,o=n>0?0:1;while(S.days[key(o+s)]>0)s++;$("sk").textContent="✦ "+s+(s===1?" Tag":" Tage")+" in Folge";
+  var s=0,o=n>0?0:1;while(S.days[key(o+s)]>0)s++;$("sk").textContent=S.theme==="cafe"?(s>0?"Stammgast: "+s+(s===1?" Tag":" Tage")+" in Folge":"Noch kein Stammgast"):"✦ "+s+(s===1?" Tag":" Tage")+" in Folge";
   var cs=$("cs");cs.innerHTML="";cs.appendChild(starRow(n,Math.max(g,n),false));
   var w=$("wk");w.innerHTML="";var dn=["So","Mo","Di","Mi","Do","Fr","Sa"];
   for(var q=6;q>=0;q--){var v=S.days[key(q)]||0,d=new Date();d.setDate(d.getDate()-q);var c=document.createElement("div");c.className=v>=g?"done":"";var bn=document.createElement("b");bn.textContent=v>=g?"★":v;c.append(bn,dn[d.getDay()]);w.appendChild(c)}
@@ -545,7 +573,7 @@ $("bc").onclick=function(){var t=$("bt");t.select();try{navigator.clipboard.writ
 
 /* Stimmungen */
 var TH=[["kamin","Kamin","#f0a050"],["nacht","Nacht","#e8d27a"],["eule","Eule","#e9f0ff"],["cafe","Café","#f2b45a"]];
-function theme(t){S.theme=t;document.body.setAttribute("data-t",t);if(typeof fxSync==="function")fxSync();document.querySelectorAll("#themes button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.t===t)});save()}
+function theme(t){S.theme=t;document.body.setAttribute("data-t",t);if(typeof fxSync==="function")fxSync();if(typeof relabel==="function"){relabel();seasonSync();stats()}document.querySelectorAll("#themes button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.t===t)});save()}
 TH.forEach(function(t){var b=document.createElement("button");b.dataset.t=t[0];var i=document.createElement("i");i.style.background=t[2];b.append(i,t[1]);b.onclick=function(){theme(t[0])};$("themes").appendChild(b)});
 
 /* Sounds (YouTube-Loops) */
@@ -598,7 +626,7 @@ function notify(t,b){try{if("Notification" in window&&Notification.permission===
 function nstat(){var el=$("ns"),b=$("nb");if(!("Notification" in window)){b.style.display=el.style.display="none";return}
   var p=Notification.permission;b.style.display=p==="granted"?"none":"";el.textContent=p==="denied"?"Im Browser blockiert. Erlaube sie über das Symbol links neben der Adresse.":""}
 $("nb").onclick=function(){try{Notification.requestPermission().then(function(){nstat();notify("Hey"+(S.name?" "+S.name:"")+"!","So sieht deine Benachrichtigung aus.")})}catch(e){}};
-$("dr").value=S.drink||"";$("dr").oninput=function(){S.drink=$("dr").value.trim();save()};$("mn").value=S.mantra||"";$("mn").oninput=function(){S.mantra=$("mn").value.trim();save()};$("pp").checked=S.post!==false;$("pp").onchange=function(){S.post=$("pp").checked;save()};
+$("dr").value=S.drink||"";$("dr").oninput=function(){S.drink=$("dr").value.trim();save()};$("mn").value=S.mantra||"";$("mn").oninput=function(){S.mantra=$("mn").value.trim();save()};$("bk").value=S.book||"";$("bk").oninput=function(){S.book=$("bk").value.trim();save()};$("pp").checked=S.post!==false;$("pp").onchange=function(){S.post=$("pp").checked;save()};
 $("nm").value=S.name||"";$("nm").oninput=function(){S.name=$("nm").value.trim();save();render()};
 var flags={},pn=null,lastTid=null,lastSid=null;
 function nm(){return S.name?", "+S.name:""}
@@ -616,14 +644,18 @@ function toast(t,m,ic,node,act){t=ct(t);m=ct(m);if(S.post===false)return;var c=$
   e.addEventListener("pointerleave",function(){e.style.setProperty("--ry","0deg");e.style.setProperty("--rx","0deg")});
   c.appendChild(e);while(c.children.length>2)c.firstChild.remove();setTimeout(kill,node?9500:7500);dockpos()}
 function greet(){toast("Post von Hedwig",hi()+". "+((S.mantra&&Math.random()<.5)?"„"+S.mantra+"“":pick(["Mach es dir gemütlich, die Kerzen brennen.","Ein kleiner Schritt reicht heute.","Bereit, wenn du es bist."])),"✉");
+  if(S.theme==="cafe"&&new Date().getDay()===5&&new Date().getHours()>=16)setTimeout(function(){toast("Freitagabend","Lern-Feierabend. Gönn dir heute etwas Schönes und ein bisschen Ruhe.","☕")},900);
   if(new Date().getHours()>=19&&!S.diary[key()])setTimeout(function(){toast("Post für dich","Was lief heute gut? Tipp hier, dann schreibst du dir eine Zeile.","✎",null,openDiary)},1500)}
-function startMsg(){var a=activeTask();toast("Runde "+rom(today()+1),"Los geht’s"+nm()+"!"+(a?" Dran: "+a.t+".":" "+pick(["Eine Sache, voller Fokus.","Handy weg, Kerze an."])),"✉")}
+function startMsg(){var a=activeTask();if(S.theme==="cafe"){toast("Bestellung","Eine Runde Fokus"+(S.drink?", dazu "+S.drink:(season()==="winter"?", dazu etwas Warmes":""))+". Kommt sofort"+nm()+"!"+(a?" Dran: "+a.t+".":""),"☕");return}toast("Runde "+rom(today()+1),"Los geht’s"+nm()+"!"+(a?" Dran: "+a.t+".":" "+pick(["Eine Sache, voller Fokus.","Handy weg, Kerze an."])),"✉")}
 function miles(){if(mode!=="focus")return;var full=MODES.focus.min*60000;
   if(!flags.h&&left<=full/2){flags.h=1;toast("Halbzeit","Die Hälfte ist geschafft"+nm()+". "+(S.mantra?"„"+S.mantra+"“":"Weiter so."),"⏳")}
   if(!flags.f&&left<=5*60000){flags.f=1;toast("Fast da","Noch fünf Minuten"+nm()+". Du schaffst das.","✦")}}
-function finMsg(wasF){if(wasF){var n=today(),g=S.goal,done=n>=g&&n-1<g,con=document.createElement("div");con.className="tcon";con.appendChild(starRow(n,Math.max(g,n),true));
-  toast(done?"Alle Sterne leuchten":n>g?"Bonus-Stern":"Stern "+n+" von "+g,done?"Dein Tagesziel ist geschafft"+nm()+"!":"Stark"+nm()+"! "+(S.drink?"Gönn dir jetzt eine Pause, "+S.drink+" wartet.":pick(TIPS)),done?"★":"✦",con)}
-  else toast("Pause vorbei","Bereit für die nächste Runde"+nm()+"?","☾")}
+function finMsg(wasF){var cf=S.theme==="cafe";if(wasF){var n=today(),g=S.goal,done=n>=g&&n-1<g,con=document.createElement("div");con.className="tcon";con.appendChild(starRow(n,Math.max(g,n),true));
+  var tip=S.drink?"Gönn dir jetzt eine Pause, "+S.drink+" wartet.":pick(TIPS);
+  if(cf)tip=(S.book&&Math.random()<.5)?"Pause? Vielleicht ein Kapitel in „"+S.book+"“.":(S.drink?"Dein "+S.drink+" ist fertig.":pick(TIPS));
+  var ti=cf?(done?"Alle Tassen gefüllt":n>g?"Bonus-Tasse":"Tasse "+n+" von "+g):(done?"Alle Sterne leuchten":n>g?"Bonus-Stern":"Stern "+n+" von "+g);
+  toast(ti,done?"Dein Tagesziel ist geschafft"+nm()+"!":(cf?"Bitteschön"+nm()+"! "+tip:"Stark"+nm()+"! "+tip),done?"★":"✦",con)}
+  else toast("Pause vorbei",cf?"Die Tasse ist leer"+nm()+". Zeit für die nächste Runde?":"Bereit für die nächste Runde"+nm()+"?","☾")}
 function ansMsg(a){var n=today(),g=S.goal;
   if(a==="no")toast("Alles gut","Neuer Anlauf, neue Runde"+nm()+".","✦");
   else if(n>=g&&n-1<g)toast("Tagesziel erreicht","Wow"+nm()+": "+rom(n)+" Runden heute. Das darfst du feiern."+(S.diary[key()]?"":" Tipp hier für eine Tagebuchzeile."),"★",null,S.diary[key()]?null:openDiary);
@@ -648,7 +680,8 @@ $("spok").onclick=spsave;$("spn").onkeydown=function(e){if(e.key==="Enter")spsav
 $("spi").value=S.sp||"";spfavs();spshow(!!(S.spw&&S.sp));
 var PAL=["#e8806b","#e6b450","#8fc07a","#6bb5c9","#8c9be0","#c58fd6","#e58fa5","#b8a38a"],DQ=["Was lief heute gut?","Worauf bist du heute stolz?","Was hast du heute gelernt?","Was war heute schön?"];
 function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
-function starRow(lit,total,nw){var d=document.createElement("div");d.className="srow";d.setAttribute("aria-hidden","true");for(var i=0;i<total;i++){var e=document.createElement("span");e.textContent="★";e.className="st"+(i<lit?" on":"")+(nw&&i===lit-1?" nw":"");d.appendChild(e)}return d}
+var CUPSVG='<svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M3 9h13v4.5A5.5 5.5 0 0 1 10.5 19h-2A5.5 5.5 0 0 1 3 13.5z" fill="currentColor"/><path d="M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 6.5c-1-1.2 1-2 0-3.3M10 6.5c-1-1.2 1-2 0-3.3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".7"/></svg>';
+function starRow(lit,total,nw){var cf=S.theme==="cafe",d=document.createElement("div");d.className="srow";d.setAttribute("aria-hidden","true");for(var i=0;i<total;i++){var e=document.createElement("span");if(cf)e.innerHTML=CUPSVG;else e.textContent="★";e.className="st"+(i<lit?" on":"")+(nw&&i===lit-1?" nw":"");d.appendChild(e)}return d}
 function subj(id){for(var i=0;i<S.subj.length;i++)if(S.subj[i].id===id)return S.subj[i]}
 function sjBtn(){var b=$("sjb");b.style.display=S.subj.length?"":"none";var cur=S.cs?subj(S.cs):null;b.style.background=cur?cur.c:"transparent";b.style.borderColor=cur?cur.c:"var(--soft)";b.title=cur?"Fach: "+cur.n+" (klicken zum Wechseln)":"Kein Fach (klicken zum Wählen)"}
 $("sjb").onclick=function(){var i=S.cs?S.subj.indexOf(subj(S.cs)):-1,nx=S.subj[i+1];S.cs=nx?nx.id:null;save();sjBtn()};
@@ -706,9 +739,16 @@ function spClamp(){var w=$("spw");if(!S.spos)return;var x=Math.max(8,Math.min(wi
   function end(){if(!on)return;on=false;w.classList.remove("dragging");var r=w.getBoundingClientRect();S.spos={x:Math.round(r.left),y:Math.round(r.top)};save();setTimeout(spClamp,50)}
   g.addEventListener("pointerup",end);g.addEventListener("pointercancel",end)})();
 var LC=["#e8913a","#c8501f","#d9a21b","#a63d1f","#9c7a2b"],MAPLE="M12 1.5l1.9 3.8 3.2-1.4-.7 4.2 3.9-1-2.2 3.5 2.8 1.3-4.7 2.6.5 2.3-3.9-1.3V22h-1.6v-4.5L7.3 18.8l.5-2.3-4.7-2.6 2.8-1.3-2.2-3.5 3.9 1-.7-4.2 3.2 1.4z";
-function fxSync(){var f=$("fx");f.innerHTML="";if(!(S.theme==="cafe"&&S.fx!==false&&!REDUCED))return;var ns="http://www.w3.org/2000/svg";
-  for(var i=0;i<16;i++){var e=document.createElementNS(ns,"svg"),p=document.createElementNS(ns,"path"),z=16+Math.random()*16,d=9+Math.random()*9;e.setAttribute("viewBox","0 0 24 24");e.setAttribute("class","lf");p.setAttribute("d",MAPLE);p.setAttribute("fill",LC[i%LC.length]);e.appendChild(p);
-    e.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;width:"+z.toFixed(0)+"px;height:"+z.toFixed(0)+"px;--sw:"+((Math.random()<.5?-1:1)*(25+Math.random()*60)).toFixed(0)+"px;--rt:"+((Math.random()<.5?-1:1)*(200+Math.random()*340)).toFixed(0)+"deg;animation-duration:"+d.toFixed(1)+"s;animation-delay:-"+(Math.random()*d).toFixed(1)+"s;opacity:"+(.55+Math.random()*.4).toFixed(2);f.appendChild(e)}}
+var LBL=[["Tagebuch","Stadtanzeiger"],["Fortschritt","Kaffeekasse"]];
+function relabel(){var c=S.theme==="cafe";document.querySelectorAll("#sb summary").forEach(function(e){var o=e.dataset.o||(e.dataset.o=e.textContent);LBL.forEach(function(p){if(o===p[0])e.textContent=c?p[1]:p[0]})});var t=document.querySelector("#tdt span");if(t)t.textContent=c?"Tagesmenü":"Aufgaben"}
+function season(){return S.season==="winter"?"winter":"herbst"}
+function fxSync(){var f=$("fx");f.innerHTML="";if(!(S.theme==="cafe"&&S.fx!==false&&!REDUCED))return;var ns="http://www.w3.org/2000/svg",i;
+  if(season()==="winter"){for(i=0;i<70;i++){var q=document.createElement("i"),z=3+Math.random()*6,d=8+Math.random()*12;q.className="sf";
+    q.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;width:"+z.toFixed(1)+"px;height:"+z.toFixed(1)+"px;--sw:"+((Math.random()<.5?-1:1)*(15+Math.random()*50)).toFixed(0)+"px;animation-duration:"+d.toFixed(1)+"s;animation-delay:-"+(Math.random()*d).toFixed(1)+"s;opacity:"+(.45+Math.random()*.5).toFixed(2)+(z>6.5?";filter:blur(1px)":"");f.appendChild(q)}return}
+  for(i=0;i<16;i++){var e=document.createElementNS(ns,"svg"),p=document.createElementNS(ns,"path"),z2=16+Math.random()*16,d2=9+Math.random()*9;e.setAttribute("viewBox","0 0 24 24");e.setAttribute("class","lf");p.setAttribute("d",MAPLE);p.setAttribute("fill",LC[i%LC.length]);e.appendChild(p);
+    e.style.cssText="left:"+(Math.random()*100).toFixed(1)+"%;width:"+z2.toFixed(0)+"px;height:"+z2.toFixed(0)+"px;--sw:"+((Math.random()<.5?-1:1)*(25+Math.random()*60)).toFixed(0)+"px;--rt:"+((Math.random()<.5?-1:1)*(200+Math.random()*340)).toFixed(0)+"deg;animation-duration:"+d2.toFixed(1)+"s;animation-delay:-"+(Math.random()*d2).toFixed(1)+"s;opacity:"+(.55+Math.random()*.4).toFixed(2);f.appendChild(e)}}
+function seasonSync(){document.body.setAttribute("data-season",season());var on=S.theme==="cafe";$("ssn").hidden=!on;document.querySelectorAll("#ssn button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.s===season())})}
+document.querySelectorAll("#ssn button").forEach(function(b){b.onclick=function(){if(S.season===b.dataset.s)return;S.season=b.dataset.s;save();seasonSync();fxSync();toast(b.dataset.s==="winter"?"Winter":"Herbst",b.dataset.s==="winter"?"Es schneit. Die Tasse wärmt die Hände.":"Die Blätter fallen. Zeit für eine Tasse.",b.dataset.s==="winter"?"❄":"🍂")}});
 $("fxc").checked=S.fx!==false;$("fxc").onchange=function(){S.fx=$("fxc").checked;save();fxSync()};
 /* Seitenleiste */
 function sbar(o){S.sb=o;$("sb").classList.toggle("open",o);document.body.classList.toggle("sbo",o);$("tg").setAttribute("aria-expanded",o);save()}

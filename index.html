@@ -11,8 +11,15 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Lernstube">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IM+Fell+English:ital@0;1&family=Caveat:wght@500;600&display=swap">
 <style>
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:500;font-display:swap;src:local("Cormorant Garamond Medium"),local("CormorantGaramond-Medium"),url(fonts/cormorant-500.woff2) format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:600 700;font-display:swap;src:local("Cormorant Garamond SemiBold"),local("CormorantGaramond-SemiBold"),url(fonts/cormorant-600.woff2) format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:500;font-display:swap;src:local("Cormorant Garamond Medium Italic"),local("CormorantGaramond-MediumItalic"),url(fonts/cormorant-italic-500.woff2) format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:600 700;font-display:swap;src:local("Cormorant Garamond SemiBold Italic"),local("CormorantGaramond-SemiBoldItalic"),url(fonts/cormorant-italic-600.woff2) format("woff2")}
+@font-face{font-family:"IM Fell English";font-style:normal;font-weight:400;font-display:swap;src:local("IM FELL English"),local("IMFeENrm28P"),url(fonts/imfell-400.woff2) format("woff2")}
+@font-face{font-family:"IM Fell English";font-style:italic;font-weight:400;font-display:swap;src:local("IM FELL English Italic"),local("IMFeENit28P"),url(fonts/imfell-italic-400.woff2) format("woff2")}
+@font-face{font-family:"Caveat";font-style:normal;font-weight:500 700;font-display:swap;src:local("Caveat SemiBold"),local("Caveat"),url(fonts/caveat-600.woff2) format("woff2")}
+
 :root{--sky1:#1a0f12;--sky2:#3a1a14;--gold:#f0a050;--ink:#f3e6c8;--soft:#bfa98a;--glass:rgba(30,16,14,.66);--tint:rgba(120,40,10,.25);--line:rgba(240,160,80,.28);--on:#1a0f12;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
@@ -371,6 +378,14 @@ li.pg{background:linear-gradient(90deg,rgba(240,160,80,.17) var(--pg),transparen
 .plan{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-2px 0 8px;font-size:.88rem;color:var(--soft);line-height:1.25}.plan:empty{display:none}.plan.over{color:var(--gold)}.plan .sm{padding:4px 9px;font-size:.82rem;flex:none}
 .en{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;width:100%}.en small{color:var(--soft);margin-right:2px}
 .en button{width:26px;height:26px;border-radius:50%!important;border:1px solid var(--line)!important;background:none!important;padding:0!important;margin:0!important;font-size:.8rem}.en button.on{background:var(--gold)!important;color:var(--on);border-color:var(--gold)!important}
+
+/* v32: Zustimmung */
+.cns{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);padding:16px}
+.cns[hidden]{display:none}
+.cnb{max-width:380px;border:1px solid var(--gold);outline:1px solid var(--line);outline-offset:-6px;border-radius:6px;padding:22px 22px 18px;background:var(--paper),var(--glass);background-color:#1c1410;box-shadow:0 24px 70px rgba(0,0,0,.6);animation:ti .5s cubic-bezier(.34,1.5,.64,1) both}
+.cnb b{display:block;font:italic 600 1.2rem "Cormorant Garamond",Georgia,serif;color:var(--gold);margin-bottom:6px}
+.cnb p{margin:0 0 14px;line-height:1.35}
+a{color:var(--gold)}
 </style>
 </head>
 <body data-t="kamin">
@@ -416,6 +431,9 @@ li.pg{background:linear-gradient(90deg,rgba(240,160,80,.17) var(--pg),transparen
     <div class="row" style="justify-content:flex-start;gap:8px;flex-wrap:wrap"><button class="sm" id="bkx">Sicherung speichern</button><button class="sm" id="bki">Sicherung laden</button></div>
     <input type="file" id="bkf" accept=".json,application/json" hidden>
     <p class="hint" id="bkn"></p>
+    <h4 class="sec">Datenschutz</h4>
+    <p class="hint" style="margin-top:0">Deine Eingaben bleiben in diesem Browser. YouTube und Spotify laden erst nach deiner Zustimmung.</p>
+    <div class="row" style="justify-content:flex-start;gap:8px;flex-wrap:wrap"><button class="sm" id="cnr">Zustimmungen zurücksetzen</button><button class="sm" id="cnd">Alle Daten löschen</button></div>
   </div></details>
   <details><summary>Fortschritt</summary><div>
     <div class="stats"><span>Tagesziel</span><span><button class="sm" id="gm" aria-label="Ziel senken">−</button> <b id="gv">4</b> <button class="sm" id="gp" aria-label="Ziel erhöhen">+</button></span></div>
@@ -439,7 +457,7 @@ li.pg{background:linear-gradient(90deg,rgba(240,160,80,.17) var(--pg),transparen
     <h4 class="sec">Bisherige Einträge</h4>
     <ul id="dl" style="max-height:260px;overflow-y:auto"></ul>
   </div></details>
-  <p class="hint" style="margin-top:18px;text-align:center">Version 31 · Oktober 2026</p>
+  <p class="hint" style="margin-top:18px;text-align:center">Version 32 · Oktober 2026 · <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutz</a></p>
 </aside>
 
 <section id="card" aria-label="Timer">
@@ -481,6 +499,7 @@ li.pg{background:linear-gradient(90deg,rgba(240,160,80,.17) var(--pg),transparen
 <div id="spw" class="off" role="region" aria-label="Spotify-Player"><div class="spwh" title="Zum Verschieben ziehen, Doppelklick setzt zurück"><span>♪ Spotify</span><span class="spr"><span class="seg" role="group" aria-label="Ansicht"><button id="spvl" aria-pressed="false">Liste</button><button id="spvr" aria-pressed="true">Platte</button></span><button class="x" id="spwx" aria-label="Widget ausblenden">✕</button></span></div><div id="vin" hidden><div class="rec"><div class="disc" id="disc" role="button" tabindex="0" aria-label="Platte drehen oder anhalten" title="Tippen: Platte drehen oder anhalten"><i class="lab" id="vlab"></i></div><i class="arm" id="arm"></i></div><p id="vt"></p></div>
   <div id="spp"></div>
   <div id="spg" aria-hidden="true" title="Höhe ziehen"></div></div>
+<div id="cns" class="cns" role="dialog" aria-modal="true" aria-labelledby="cnt" hidden><div class="cnb"><b id="cnt"></b><p id="cnp"></p><div class="row"><button class="go" id="cny">Laden</button><button class="rs" id="cnn">Abbrechen</button></div></div></div>
 <div id="sndf"></div>
 <div id="toasts" aria-live="polite"></div>
 <button id="pill" aria-label="Timer ausklappen"><b id="pt">25:00</b><small id="pk"></small></button>
@@ -489,9 +508,9 @@ li.pg{background:linear-gradient(90deg,rgba(240,160,80,.17) var(--pg),transparen
 (function(){
 var $=function(i){return document.getElementById(i)};
 var key=function(o){var d=new Date();d.setDate(d.getDate()-(o||0));return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
-var S={wg:0,lastBackup:0,lastWeekly:"",hab:{goal:8,rem:true,items:[],places:["Zuhause","Bibliothek","Café","Uni"]},hl:{},rl:[],best:null,ex:{n:"",d:""},subj:[],sj:{},diary:{},cs:null,spw:false,vst:5,slink:{},sfavs:[],sp:"",vv:0,vl:60,name:"Sophie",drink:"",mantra:"",post:true,todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
+var S={wg:0,lastBackup:0,lastWeekly:"",hab:{goal:8,rem:true,items:[],places:["Zuhause","Bibliothek","Café","Uni"]},hl:{},rl:[],best:null,ex:{n:"",d:""},subj:[],sj:{},diary:{},cs:null,spw:false,vst:5,slink:{},sfavs:[],sp:"",vv:0,vl:60,name:"",drink:"",mantra:"",post:true,todos:[],days:{},goal:4,theme:"kamin",vol:{rain:0,fire:0,cafe:0,wind:0},active:null,yt:"",sb:null,favs:[{n:"ASMR-Rooms: Hogwarts (Playlist)",u:"https://www.youtube.com/playlist?list=PLjFwUFnGRUqN9pIvCq6TS1FMaJNxX0KEv"}]};
 try{var r=JSON.parse(localStorage.getItem("lernstube1"));if(r)for(var k in r)S[k]=r[k]}catch(e){}
-function save(){try{localStorage.setItem("lernstube1",JSON.stringify(S))}catch(e){}}
+function save(){if(window.__del)return;try{localStorage.setItem("lernstube1",JSON.stringify(S))}catch(e){}}
 var ART={der:{nom:"der",akk:"den",dat:"dem",gen:"des"},die:{nom:"die",akk:"die",dat:"der",gen:"der"},das:{nom:"das",akk:"das",dat:"dem",gen:"des"}};
 function nmP(){var raw=(S.name||"").trim(),m=raw.match(/^(der|die|das)\s+(\S.*)$/i);return m?{g:m[1].toLowerCase(),b:m[2].trim()}:{g:"",b:raw}}
 function nmB(){return nmP().b}
@@ -638,7 +657,11 @@ function sid(u){var m=(u||"").match(/(?:v=|youtu\.be\/|embed\/|live\/|shorts\/)(
 function slink(k){return S.slink[k]!==undefined?S.slink[k]:SND[k]}
 function scmd(k,f,a){var fr=SF[k];if(fr&&fr.contentWindow)fr.contentWindow.postMessage(JSON.stringify({event:"command",func:f,args:a||""}),"*")}
 function sapply(k){var v=S.vol[k]||0;if(!SF[k])return;if(v===0){scmd(k,"mute");scmd(k,"pauseVideo")}else{scmd(k,"playVideo");scmd(k,"unMute");scmd(k,"setVolume",[v])}}
-function sload(k){var id=sid(slink(k));if(!id){toast(LB[k],"Füge über das ✎ zuerst einen YouTube-Link ein.","🎧");return}
+var CNS={yt:["YouTube laden?","Beim Abspielen von YouTube (Google) werden Daten von deinem Gerät übertragen, zum Beispiel deine IP-Adresse, und es können Cookies gesetzt werden. Mit „Laden“ stimmst du dem zu. Du kannst die Zustimmung unter „Persönlich“ zurücksetzen."],sp:["Spotify laden?","Beim Laden des Spotify-Players werden Daten von deinem Gerät an Spotify übertragen, zum Beispiel deine IP-Adresse, und es können Cookies gesetzt werden. Mit „Laden“ stimmst du dem zu. Du kannst die Zustimmung unter „Persönlich“ zurücksetzen."]};
+function ask(svc,ok){if(S.ok&&S.ok[svc]){ok();return}var D=CNS[svc],d=$("cns"),close=function(){d.hidden=true};$("cnt").textContent=D[0];$("cnp").textContent=D[1];d.hidden=false;$("cny").focus();
+  $("cny").onclick=function(){S.ok=S.ok||{};S.ok[svc]=true;save();close();ok()};$("cnn").onclick=close;d.onkeydown=function(e){if(e.key==="Escape")close()};d.onclick=function(e){if(e.target===d)close()}}
+function sload(k,auto){var id=sid(slink(k));if(!id){toast(LB[k],"Füge über das ✎ zuerst einen YouTube-Link ein.","🎧");return}
+  if(!(S.ok&&S.ok.yt)){if(!auto)ask("yt",function(){sload(k)});return}
   if(SF[k]){SF[k].remove();SF[k]=null}
   var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+id+"?enablejsapi=1&playsinline=1&rel=0&autoplay=1&mute=1&controls=0&disablekb=1&loop=1&playlist="+id+"&start=300";
   f.allow="autoplay; encrypted-media";f.title="Klangkulisse "+k;f.setAttribute("aria-hidden","true");f.tabIndex=-1;
@@ -651,13 +674,14 @@ KS.forEach(function(k){var w=document.createElement("div"),r=document.createElem
   a.className="add";a.style.cssText="display:none;margin-bottom:6px";t.type="text";t.placeholder="YouTube-Link einfügen";t.value=slink(k);t.setAttribute("aria-label","Link für "+LB[k]);g.className="sm";g.textContent="OK";
   e.onclick=function(){a.style.display=a.style.display==="none"?"flex":"none"};
   g.onclick=function(){var v=t.value.trim();if(v&&!sid(v)){t.value="";t.placeholder="Kein gültiger Link";return}S.slink[k]=v;save();a.style.display="none";if(SF[k]){SF[k].remove();SF[k]=null}if((S.vol[k]||0)>0)sload(k)};
-  r.append(l,i,e);a.append(t,g);w.append(r,a);$("sndl").appendChild(w);if((S.vol[k]||0)>0)sload(k)});
+  r.append(l,i,e);a.append(t,g);w.append(r,a);$("sndl").appendChild(w);if((S.vol[k]||0)>0)sload(k,true)});
 document.addEventListener("pointerdown",function f(){document.removeEventListener("pointerdown",f);KS.forEach(function(k){if((S.vol[k]||0)>0)sapply(k)});if(S.vv>0&&$("yf"))setTimeout(function(){vvol(S.vv)},400)});
 
 /* Video im Vollbild */
 var muted=true,vpl=true;
 function ytParse(v){var m=v.match(/(?:v=|youtu\.be\/|embed\/|live\/|shorts\/)([\w-]{11})/),l=v.match(/[?&]list=([\w-]+)/);if(!m&&!l)return null;return{v:m&&m[1],l:l&&l[1]}}
 function yt(){var val=$("yi").value.trim(),m=ytParse(val);if(!m){$("yi").value="";$("yi").placeholder="Kein gültiger YouTube-Link";return}
+  if(!(S.ok&&S.ok.yt)){ask("yt",yt);return}
   S.yt=val;save();muted=true;$("vv").value=$("mv").value=0;vpl=true;$("vp").textContent="❚❚";var bg=$("bg");bg.innerHTML="";var i=document.createElement("iframe"),q="?enablejsapi=1&playsinline=1&rel=0&autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&loop=1";
   if(m.v)i.src="https://www.youtube-nocookie.com/embed/"+m.v+q+(m.l?"&list="+m.l:"&playlist="+m.v);else i.src="https://www.youtube-nocookie.com/embed/videoseries"+q+"&list="+m.l;
   i.allow="autoplay; encrypted-media";i.title="Hintergrundvideo";i.id="yf";bg.appendChild(i);$("mw").style.display="flex";$("mw").classList.add("peek");setTimeout(function(){$("mw").classList.remove("peek")},3500);$("mu").textContent="🔇"}
@@ -672,7 +696,7 @@ function vvol(v){v=Math.max(0,Math.min(100,v));S.vv=v;if(v>0)S.vl=v;save();muted
 $("vv").oninput=function(){vvol(+$("vv").value)};$("mv").oninput=function(){vvol(+$("mv").value)};$("vp").onclick=function(){vpl=!vpl;ytcmd(vpl?"playVideo":"pauseVideo");$("vp").textContent=vpl?"❚❚":"▶";$("vp").setAttribute("aria-label",vpl?"Video pausieren":"Video fortsetzen")};
 $("mu").onclick=function(){vvol(muted?(S.vl||60):0)};
 $("fs").onclick=function(){try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}catch(e){}};
-$("yi").value=S.yt||"";favs();if(S.yt)yt();
+$("yi").value=S.yt||"";favs();if(S.yt&&S.ok&&S.ok.yt)yt();
 
 function cmin(o){S.cm=o;$("card").classList.toggle("min",o);$("pill").classList.toggle("on",o);save();dockpos()}
 function tdo(o){S.td=o;$("tdw").classList.toggle("open",o);$("tdt").setAttribute("aria-expanded",o);save()}
@@ -699,7 +723,7 @@ function toast(t,m,ic,node,act){t=ct(t);m=ct(m);if(S.post===false)return;var c=$
   e.addEventListener("pointermove",function(ev){var r=e.getBoundingClientRect();e.style.setProperty("--ry",((ev.clientX-r.left)/r.width-.5)*14+"deg");e.style.setProperty("--rx",-((ev.clientY-r.top)/r.height-.5)*12+"deg")});
   e.addEventListener("pointerleave",function(){e.style.setProperty("--ry","0deg");e.style.setProperty("--rx","0deg")});
   c.appendChild(e);while(c.children.length>2)c.firstChild.remove();setTimeout(kill,node?9500:7500);dockpos()}
-function greet(){backupNudge();weeklyNudge();if(S.best!=null&&blk(new Date().getHours())===S.best)setTimeout(function(){toast("Dein Fokus-Fenster","Gerade läuft es bei dir erfahrungsgemäß am besten. Gute Zeit für die schwerste Aufgabe.","✦")},2400);toast("Post von Hedwig",hi()+". "+((S.mantra&&Math.random()<.5)?"„"+S.mantra+"“":pick(["Mach es dir gemütlich, die Kerzen brennen.","Ein kleiner Schritt reicht heute.","Bereit, wenn du es bist."])),"✉");
+function greet(){if(!S.name&&!S.welcomed){S.welcomed=1;save();setTimeout(function(){toast("Willkommen","Trag unter „Persönlich“ deinen Namen ein, dann spreche ich dich persönlich an. Tipp hier.","✉",null,function(){openSec("Persönlich");setTimeout(function(){$("nm").focus()},500)})},900)}backupNudge();weeklyNudge();if(S.best!=null&&blk(new Date().getHours())===S.best)setTimeout(function(){toast("Dein Fokus-Fenster","Gerade läuft es bei dir erfahrungsgemäß am besten. Gute Zeit für die schwerste Aufgabe.","✦")},2400);toast("Post von Hedwig",hi()+". "+((S.mantra&&Math.random()<.5)?"„"+S.mantra+"“":pick(["Mach es dir gemütlich, die Kerzen brennen.","Ein kleiner Schritt reicht heute.","Bereit, wenn du es bist."])),"✉");
   if(S.theme==="cafe"&&new Date().getDay()===5&&new Date().getHours()>=16)setTimeout(function(){toast("Freitagabend","Lern-Feierabend. Gönn dir heute etwas Schönes und ein bisschen Ruhe.","☕")},900);
   if(new Date().getHours()>=19&&!S.diary[key()])setTimeout(function(){toast("Post für dich","Was lief heute gut? Tipp hier, dann schreibst du dir eine Zeile.","✎",null,openDiary)},1500)}
 function startMsg(){var a=activeTask();if(S.theme==="cafe"){toast("Bestellung","Eine Runde Fokus"+(S.drink?", dazu "+S.drink:({winter:", dazu etwas Warmes",sommer:", dazu etwas Kühles",fruehling:", dazu etwas Frisches"}[season()]||""))+". Kommt sofort"+nm()+"!"+(a?" Dran: "+a.t+".":""),"☕");return}toast("Runde "+rom(today()+1),"Los geht’s"+nm()+"!"+(a?" Dran: "+a.t+".":" "+pick(["Eine Sache, voller Fokus.","Handy weg, Kerze an."])),"✉")}
@@ -719,11 +743,12 @@ function ansMsg(a){var n=today(),g=S.goal;
 function spParse(u){var m=u.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|album|playlist|artist|episode|show)\/([A-Za-z0-9]+)/)||u.match(/spotify:(track|album|playlist|artist|episode|show):([A-Za-z0-9]+)/);return m?{t:m[1],i:m[2]}:null}
 function spSize(){var f=$("spp").querySelector("iframe");if(f){f.style.width="100%";f.style.border="0";f.style.borderRadius="20px";f.style.height=(spRec()?152:(S.splh||232))+"px"}}
 function spFrame(m){var c=$("spp"),f=document.createElement("iframe");f.src="https://open.spotify.com/embed/"+m.t+"/"+m.i+"?theme=0";f.title="Spotify-Player";f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.loading="eager";f.referrerPolicy="strict-origin-when-cross-origin";c.replaceChildren(f);spSize()}
-function spMount(){var m=spParse(S.sp||"");if(!m){$("spp").replaceChildren();spCtl=null;spCov(null);spView();return}spMeta();var uri="spotify:"+m.t+":"+m.i;
+function spHold(){var b=document.createElement("button");b.className="sm";b.textContent="Spotify laden";b.style.margin="10px";b.onclick=function(){ask("sp",spMount)};$("spp").replaceChildren(b);spCtl=null}
+function spMount(){var m=spParse(S.sp||"");if(!m){$("spp").replaceChildren();spCtl=null;spCov(null);spView();return}if(!(S.ok&&S.ok.sp)){spHold();spView();return}spMeta();var uri="spotify:"+m.t+":"+m.i;
   if(spCtl){try{spCtl.loadUri(uri);spView();return}catch(e){spCtl=null}}
   if(window.__sp){spCtlMount();spView();return}
   spCtl=null;spFrame(m);spView()}
-function sp(q){var v=$("spi").value.trim(),m=spParse(v);if(!m){$("spi").value="";$("spi").placeholder="Kein gültiger Spotify-Link";return}S.sp=v;save();spMount();if(!q)spshow(true)}
+function sp(q){var v=$("spi").value.trim(),m=spParse(v);if(!m){$("spi").value="";$("spi").placeholder="Kein gültiger Spotify-Link";return}ask("sp",function(){S.sp=v;save();spMount();if(!q)spshow(true)})}
 function spfavs(){var c=$("spf");c.innerHTML="";S.sfavs.forEach(function(f,i){var w=document.createElement("span");w.className="fv";var b=document.createElement("button");b.className="sm";b.textContent="♪ "+f.n;b.onclick=function(){$("spi").value=f.u;sp()};
   var x=document.createElement("button");x.className="x";x.textContent="✕";x.setAttribute("aria-label",f.n+" entfernen");x.onclick=function(){S.sfavs.splice(i,1);save();spfavs()};w.append(b,x);c.appendChild(w)})}
 $("spb").onclick=function(){sp()};$("spi").onkeydown=function(e){if(e.key==="Enter")sp()};
@@ -832,7 +857,7 @@ function discTap(){if(spCtl){var was=spLive;try{spCtl.togglePlay()}catch(e){}cle
 $("disc").onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();discTap()}};
 window.addEventListener("message",function(e){if(e.origin!=="https://open.spotify.com")return;var d=e.data;if(typeof d==="string"){try{d=JSON.parse(d)}catch(x){return}}if(d&&d.type==="playback_update"&&d.payload){spKnown=true;spLive=!d.payload.isPaused;if(spLive&&spPeek)spPeek=false;spView()}});
 function spRec(){return S.spview!=="list"}
-function spView(){var on=spRec();if(on&&S.sp){if(spApi==="idle")spLoadApi();if(window.__sp&&!spCtl)spCtlMount()}
+function spView(){var on=spRec();if(on&&S.sp&&S.ok&&S.ok.sp){if(spApi==="idle")spLoadApi();if(window.__sp&&!spCtl)spCtlMount()}
   $("spw").classList.toggle("vinyl",on);$("spw").classList.toggle("ctl",!!(on&&!spPeek));$("vin").hidden=!on;$("spvl").setAttribute("aria-pressed",!on);$("spvr").setAttribute("aria-pressed",on);spSize();spSpin();setTimeout(spClamp,60);setTimeout(spClamp,480)}
 $("spvl").onclick=function(){S.spview="list";save();spView()};$("spvr").onclick=function(){S.spview="rec";save();spView()};
 function spClamp(){var w=$("spw");if(!S.spos)return;var x=Math.max(8,Math.min(window.innerWidth-w.offsetWidth-8,S.spos.x)),y=Math.max(8,Math.min(window.innerHeight-w.offsetHeight-8,S.spos.y));w.classList.add("moved");w.style.left=x+"px";w.style.top=y+"px";w.style.bottom="auto"}
@@ -869,6 +894,8 @@ document.querySelectorAll("#ssn button").forEach(function(b){b.onclick=function(
 $("fxc").checked=S.fx!==false;$("fxc").onchange=function(){S.fx=$("fxc").checked;save();fxSync()};
 var curE=0;
 $("esb").onclick=function(){curE=(curE+1)%7;$("esb").textContent=curE?"×"+curE:"~";$("esb").title=curE?"Geschätzt: "+curE+(curE===1?" Runde":" Runden"):"Geschätzte Runden (klicken zum Ändern)"};
+$("cnr").onclick=function(){S.ok={};save();location.reload()};
+$("cnd").onclick=function(){if(confirm("Wirklich alle Daten in diesem Browser löschen? Das lässt sich nicht rückgängig machen. Tipp: Mach vorher eine Sicherung.")){window.__del=1;try{localStorage.removeItem("lernstube1")}catch(e){}location.reload()}};
 function openSec(name){sbar(true);document.querySelectorAll("#sb details").forEach(function(d){var t=d.querySelector("summary");if((t.dataset.o||t.textContent)===name)d.open=true})}
 /* Sicherung */
 function backupNote(){var t=S.lastBackup;$("bkn").textContent=t?"Letzte Sicherung: "+new Date(t).toLocaleDateString("de-DE"):"Noch keine Sicherung gemacht."}
